@@ -30,22 +30,27 @@ Blockly.JavaScript.qxui_container_composite = function() {
   code.push("(function() {",
             "var o = new qx.ui.mobile.container.Composite(" +
             "new qx.ui.layout." +
-            (this.getValueLabel(1) == "horizontal" ? "HBox()" : "VBox()") +
+            (this.getTitleText(2) == "horizontal" ? "HBox()" : "VBox()") +
             ");");
 
-  // This isn't what I want. I want each of the blocks in statement[0],
-  // not concatenated code from all of the blocks. I need to add a prefix
-  // and suffix to each one...???
-  statements.push(Blockly.JavaScript.statementToCode_(this, 0));
-  console.log("statements.length=" + statements.length);
-  statements.forEach(
-    function(statement) {
-      console.log("statement=" + statement);
-      if (statement.trim().length > 0) {
-        code.push("o.add(", statement, ");");
-      }
-    });
+  var generator = Blockly.Generator.get('JavaScript');
+
+  var i;
+  var block;
+  
+  for (block = this.getStatementInput(0), i = 0;
+       block; 
+       block = block.nextConnection && block.nextConnection.targetBlock(), ++i)
+  {
+    var blockCode = generator.blockToCode(block, true, true);
+    if (blockCode.trim().length) {
+      code.push("o.add(", blockCode, ");");
+    }
+  }
+
   code.push("return o;",
             "})()");
+
+  console.log("Returning: " + code.join("\n"));
   return code.join("\n");
 };
