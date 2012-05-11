@@ -44,46 +44,51 @@ Blockly.Connection = function(source, type) {
  * function may be overridden on a per-application basis.
  * 
  * @param {Map} inputSemantics Semantic requirements for the input connection
- * @param {Map} blockSemantics Semantic requirements for the block being 
- *   connected to the input connection
+ * @param {Map} blockSemantics Semantic requirements for the block whose 
+ *   output is being connected to the input connection
  * @return {Boolean} true if the semantics match; false otherwise
  */
-Blockly.Connection.validateSemantics = function(inputSemantics, 
-                                                blockSemantics) {
-  var ret = inputSemantics.type === blockSemantics.type;
+Blockly.Connection.validSemantics = function(inputSemantics, blockSemantics) {
+  var ret;
+
+  // Ensure that the block being connected provides semantics
+  if (! blockSemantics || ! blockSemantics.type) {
+
+      // It doesn't. Let 'em know.
+      alert('Attempt to connect incompatible semantic types: ' +
+            'missing required semantics in block with output');
+    
+      // Connection is disallowed.
+      return false;
+  }
+
+  // See if the semantic types are the same
+  ret = inputSemantics.type === blockSemantics.type;
   
+  // If not...
   if (! ret) {
+    // ... then let 'em know!
     alert('Attempt to connect incompatible semantic types (' +
           inputSemantics.type + '/' + blockSemantics.type + ')');
   }
   
+  // Give 'em what they came for.
   return ret;
 }
 
-Blockly.Connection.validSemantics_ = function(thisBlock, otherConnection) {
+Blockly.Connection.validateSemantics_ = function(thisBlock, otherConnection) {
   switch(thisBlock.type)
   {
   case Blockly.OUTPUT_VALUE:
     // Is a semantic match required?
     if (! otherConnection.semantics || ! otherConnection.semantics.type) {
 
-      // Nope. The blocks match by default.
+      // Nope. The blocks are allowed to match, by default.
       return true;
     }
 
-    // A semantic match is required. Ensure peer provides semantics.
-    if (! thisBlock.sourceBlock_.semantics ||
-        ! thisBlock.sourceBlock_.semantics.type) {
-
-      // A match is required, and the peer doesn't provide semantics
-      alert('Attempt to connect incompatible semantic types: ' +
-            'missing semantics in output\'s peer');
-            
-      return false;
-    }
-      
     // Call the actual validator
-    return Blockly.Connection.validateSemantics(
+    return Blockly.Connection.validSemantics(
       otherConnection.semantics,
       thisBlock.sourceBlock_.semantics);
     
@@ -92,22 +97,12 @@ Blockly.Connection.validSemantics_ = function(thisBlock, otherConnection) {
     if (! thisBlock.semantics ||
         ! thisBlock.semantics.type) {
 
-      // Nope. The blocks match by default.
+      // Nope. The blocks are allowed to match, by default.
       return true;
     }
 
-    // A semantic match is required. Ensure peer provides semantics.
-    if (! otherConnection.sourceBlock_.semantics ||
-        ! otherConnection.sourceBlock_.semantics.type) {
-
-      // A match is required, and the peer doesn't provide semantics
-      alert('Attempt to connect incompatible semantic types: ' +
-            'missing semantics in input\'s peer');
-      return false;
-    }
-      
     // Call the actual validator
-    return Blockly.Connection.validateSemantics(
+    return Blockly.Connection.validSemantics(
       thisBlock.semantics,
       otherConnection.sourceBlock_.semantics);
     break;
@@ -148,7 +143,7 @@ Blockly.Connection.prototype.connect = function(otherConnection) {
     if (this.targetConnection) {
       // Can't make a value connection if male block is already connected.
       throw 'Source connection already connected (value).';
-    } else if (! Blockly.Connection.validSemantics_(this, otherConnection)) {
+    } else if (! Blockly.Connection.validateSemantics_(this, otherConnection)) {
       return null;
     } else if (otherConnection.targetConnection) {
       // If female block is already connected, disconnect and bump the male.
