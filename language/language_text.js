@@ -31,6 +31,7 @@ if (!Blockly.Language) {
 Blockly.Language.text = {
   // Text value.
   category: 'Text',
+  semantics: { type : "string" },
   helpUrl: 'http://en.wikipedia.org/wiki/String_(computer_science)',
   init: function() {
     this.setColour(160);
