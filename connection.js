@@ -50,10 +50,7 @@ Blockly.Connection = function(source, type) {
  */
 Blockly.Connection.validateSemantics = function(inputSemantics, 
                                                 blockSemantics) {
-  console.log("validateSemantics: " + 
-              inputSemantics.type + '/' + blockSemantics.type + ')');
-
-  var ret = inputSemantics.type == blockSemantics.type;
+  var ret = inputSemantics.type === blockSemantics.type;
   
   if (! ret) {
     alert('Attempt to connect incompatible semantic types (' +
