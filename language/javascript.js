@@ -154,10 +154,11 @@ Blockly.JavaScript.quote_ = function(string) {
  * Calls any statements following this block.
  * @param {!Blockly.Block} block The current block.
  * @param {string} code The JavaScript code created for this block.
+ * @param {?boolean} excludeNext Whether to exclude next-connection processing
  * @return {string} JavaScript code with comments and subsequent blocks added.
  * @private
  */
-Blockly.JavaScript.scrub_ = function(block, code) {
+Blockly.JavaScript.scrub_ = function(block, code, excludeNext) {
   var commentCode = '';
   // Only collect comments for blocks that aren't inline.
   if (!block.outputConnection || !block.outputConnection.targetConnection) {
@@ -180,7 +181,11 @@ Blockly.JavaScript.scrub_ = function(block, code) {
       }
     }
   }
-  var nextBlock = block.nextConnection && block.nextConnection.targetBlock();
-  var nextCode = this.blockToCode(nextBlock);
+
+  var nextCode = '';
+  if (! excludeNext) {
+    var nextBlock = block.nextConnection && block.nextConnection.targetBlock();
+    nextCode = this.blockToCode(nextBlock);
+  }
   return commentCode + code + nextCode;
 };
