@@ -202,11 +202,6 @@ Blockly.JavaScript.qxmobileui_slider = function() {
     comma = "   ,";
   }
 
-  if (step) {
-    code.push(comma + (step ? "step : " + step + "\n"  : ""));
-    comma = "   ,";
-  }
-
   code.push("  })");
 
   return code.join("");

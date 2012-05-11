@@ -55,7 +55,8 @@ Blockly.Language.qxmobileui_container_composite = {
       return window.isNaN(n) ? null : String(n);
     }));
 
-    this.addInput("", "", Blockly.NEXT_STATEMENT);
+    this.addInput("", "", Blockly.NEXT_STATEMENT, 
+                  null, { type : "string" });
   }
 };
 
@@ -77,10 +78,12 @@ Blockly.Language.qxmobileui_atom = {
                     Blockly.Variables.dropdownChange));
 
     // Add the text input
-    this.addInput("  label:", "", Blockly.INPUT_VALUE);
+    this.addInput("  label:", "", Blockly.INPUT_VALUE, 
+                  null, { type : "string" });
     
     // Add the icon (url) input
-    this.addInput("  icon:", "", Blockly.INPUT_VALUE);
+    this.addInput("  icon:", "", Blockly.INPUT_VALUE, 
+                  null, { type : "string" });
   }
 };
 
@@ -101,7 +104,8 @@ Blockly.Language.qxmobileui_image = {
                     Blockly.Variables.dropdownChange));
 
     // Add the icon (url) input
-    this.addInput("  icon:", "", Blockly.INPUT_VALUE);
+    this.addInput("  icon:", "", Blockly.INPUT_VALUE, 
+                  null, { type : "string" });
   }
 };
 
@@ -122,7 +126,8 @@ Blockly.Language.qxmobileui_label = {
                     Blockly.Variables.dropdownChange));
 
     // Add the text input
-    this.addInput("  label:", "", Blockly.INPUT_VALUE);
+    this.addInput("  label:", "", Blockly.INPUT_VALUE, 
+                  null, { type : "string" });
   }
 };
 
@@ -143,7 +148,8 @@ Blockly.Language.qxmobileui_button = {
                     Blockly.Variables.dropdownChange));
 
     // Add the button's label
-    this.addInput("  label:", "", Blockly.INPUT_VALUE);
+    this.addInput("  label:", "", Blockly.INPUT_VALUE, 
+                  null, { type : "string" });
   }
 };
 
@@ -182,7 +188,8 @@ Blockly.Language.qxmobileui_numberInput = {
                     Blockly.Variables.dropdownChange));
 
     // Add the initial value
-    this.addInput("  initial value:", "", Blockly.INPUT_VALUE);
+    this.addInput("  initial value:", "", Blockly.INPUT_VALUE, 
+                  null, { type : "integer" });
   }
 };
 
@@ -203,7 +210,8 @@ Blockly.Language.qxmobileui_passwordInput = {
                     Blockly.Variables.dropdownChange));
 
     // Add the initial value
-    this.addInput("  initial value:", "", Blockly.INPUT_VALUE);
+    this.addInput("  initial value:", "", Blockly.INPUT_VALUE, 
+                  null, { type : "string" });
   }
 };
 
@@ -260,16 +268,16 @@ Blockly.Language.qxmobileui_slider = {
                     Blockly.Variables.dropdownChange));
 
     // Add the initial value
-    this.addInput("  initial value:", "", Blockly.INPUT_VALUE);
+    this.addInput("  initial value:", "", Blockly.INPUT_VALUE, 
+                  null, { type : "integer" });
 
     // Add the minimum value
-    this.addInput("  minimum:", "", Blockly.INPUT_VALUE);
+    this.addInput("  minimum:", "", Blockly.INPUT_VALUE, 
+                  null, { type : "integer" });
 
     // Add the maximum value
-    this.addInput("  maximum:", "", Blockly.INPUT_VALUE);
-
-    // Add the single-step value
-    this.addInput("  single step:", "", Blockly.INPUT_VALUE);
+    this.addInput("  maximum:", "", Blockly.INPUT_VALUE, 
+                  null, { type : "integer" });
   }
 };
 
@@ -290,7 +298,8 @@ Blockly.Language.qxmobileui_textArea = {
                     Blockly.Variables.dropdownChange));
 
     // Add the initial value
-    this.addInput("  initial value:", "", Blockly.INPUT_VALUE);
+    this.addInput("  initial value:", "", Blockly.INPUT_VALUE, 
+                  null, { type : "string" });
   }
 };
 
@@ -311,7 +320,8 @@ Blockly.Language.qxmobileui_textInput = {
                     Blockly.Variables.dropdownChange));
 
     // Add the initial value
-    this.addInput("  initial value:", "", Blockly.INPUT_VALUE);
+    this.addInput("  initial value:", "", Blockly.INPUT_VALUE, 
+                  null, { type : "string" });
   }
 };
 
