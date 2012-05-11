@@ -40,6 +40,87 @@ Blockly.Connection = function(source, type) {
 };
 
 /**
+ * Function called when both a connection and a block provide semantics. This
+ * function may be overridden on a per-application basis.
+ * 
+ * @param {Map} inputSemantics Semantic requirements for the input connection
+ * @param {Map} blockSemantics Semantic requirements for the block being 
+ *   connected to the input connection
+ * @return {Boolean} true if the semantics match; false otherwise
+ */
+Blockly.Connection.validateSemantics = function(inputSemantics, 
+                                                blockSemantics) {
+  console.log("validateSemantics: " + 
+              inputSemantics.type + '/' + blockSemantics.type + ')');
+
+  var ret = inputSemantics.type == blockSemantics.type;
+  
+  if (! ret) {
+    alert('Attempt to connect incompatible semantic types (' +
+          inputSemantics.type + '/' + blockSemantics.type + ')');
+  }
+  
+  return ret;
+}
+
+Blockly.Connection.validSemantics_ = function(thisBlock, otherConnection) {
+  switch(thisBlock.type)
+  {
+  case Blockly.OUTPUT_VALUE:
+    // Is a semantic match required?
+    if (! otherConnection.semantics || ! otherConnection.semantics.type) {
+
+      // Nope. The blocks match by default.
+      return true;
+    }
+
+    // A semantic match is required. Ensure peer provides semantics.
+    if (! thisBlock.sourceBlock_.semantics ||
+        ! thisBlock.sourceBlock_.semantics.type) {
+
+      // A match is required, and the peer doesn't provide semantics
+      alert('Attempt to connect incompatible semantic types: ' +
+            'missing semantics in output\'s peer');
+            
+      return false;
+    }
+      
+    // Call the actual validator
+    return Blockly.Connection.validateSemantics(
+      otherConnection.semantics,
+      thisBlock.sourceBlock_.semantics);
+    
+  case Blockly.INPUT_VALUE:
+    // Is a semantic match required?
+    if (! thisBlock.semantics ||
+        ! thisBlock.semantics.type) {
+
+      // Nope. The blocks match by default.
+      return true;
+    }
+
+    // A semantic match is required. Ensure peer provides semantics.
+    if (! otherConnection.sourceBlock_.semantics ||
+        ! otherConnection.sourceBlock_.semantics.type) {
+
+      // A match is required, and the peer doesn't provide semantics
+      alert('Attempt to connect incompatible semantic types: ' +
+            'missing semantics in input\'s peer');
+      return false;
+    }
+      
+    // Call the actual validator
+    return Blockly.Connection.validateSemantics(
+      thisBlock.semantics,
+      otherConnection.sourceBlock_.semantics);
+    break;
+    
+  default:
+    throw 'Unexpected type: ' + this.type;
+  }
+};
+
+/**
  * Sever all links to this connection (not including from the source object).
  */
 Blockly.Connection.prototype.destroy = function() {
@@ -70,6 +151,8 @@ Blockly.Connection.prototype.connect = function(otherConnection) {
     if (this.targetConnection) {
       // Can't make a value connection if male block is already connected.
       throw 'Source connection already connected (value).';
+    } else if (! Blockly.Connection.validSemantics_(this, otherConnection)) {
+      return null;
     } else if (otherConnection.targetConnection) {
       // If female block is already connected, disconnect and bump the male.
       var orphanBlock = otherConnection.targetBlock();

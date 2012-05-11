@@ -973,9 +973,11 @@ Blockly.Block.prototype.setCollapsed = function(collapsed) {
  * @param {number} opt_index If present, this is the index (zero-based) where
  *     the new input will be in the input stack.  If not present, the new input
  *     will be at the bottom of the stack.
+ * @param {Map} semantics Semantic requirements of this input.
  * @return {!Object} The input object created.
  */
-Blockly.Block.prototype.addInput = function(label, tooltip, type, opt_index) {
+Blockly.Block.prototype.addInput = function(label, tooltip,
+                                            type, opt_index, semantics) {
   // Create descriptive text element.
   var textElement = null;
   if (label) {
@@ -1003,6 +1005,7 @@ Blockly.Block.prototype.addInput = function(label, tooltip, type, opt_index) {
     input = new Blockly.Connection(this, type);
   }
   input.label = textElement;
+  input.semantics = semantics || null;
   if (typeof opt_index == 'number') {
     if (opt_index < 0 || opt_index > this.inputList.length) {
       throw 'There are ' + this.inputList.length +
