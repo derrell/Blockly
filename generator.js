@@ -43,9 +43,11 @@ Blockly.Generator.get = function(name) {
      * @param {Blockly.Block} block The block to generate code for.
      * @param {?boolean} opt_dropParens If true, don't surround code with
      *     paretheses since the caller already has a safe container.
+     * @param {?boolean} excludeNext Whether to exclude next-connection
+     *      processing
      * @return {string} Generated code, or '' if block is null.
      */
-    generator.blockToCode = function(block, opt_dropParens) {
+    generator.blockToCode = function(block, opt_dropParens, excludeNext) {
       if (!block) {
         return '';
       }
@@ -55,7 +57,7 @@ Blockly.Generator.get = function(name) {
             'for block type "' + block.type + '"';
       }
       var code = func.call(block, opt_dropParens);
-      return this.scrub_(block, code);
+      return this.scrub_(block, code, excludeNext);
     };
 
     Blockly.Generator.languages[name] = generator;
