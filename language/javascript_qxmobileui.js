@@ -36,7 +36,7 @@ Blockly.JavaScript.qxmobileui_container_composite = function() {
   // Generate the portion of this block that preceeds its children
   code.push(
     (this.getTitleText(1).trim().length > 0
-     ? this.getTitleText(1) + " = "
+     ? "this.obj_" + this.getTitleText(1) + " = "
      : "") +
     "(function() {",
     "var o = new qx.ui.mobile.container.Composite(\n" +
@@ -69,7 +69,7 @@ Blockly.JavaScript.qxmobileui_container_composite = function() {
 Blockly.JavaScript.qxmobileui_atom = function() {
   var code =
     (this.getTitleText(1).trim().length > 0
-     ? this.getTitleText(1) + " = "
+     ? "this.obj_" + this.getTitleText(1) + " = "
      : "") +
     "new qx.ui.mobile.basic.Atom(" +
     (Blockly.JavaScript.valueToCode_(this, 0, true) || 'null') +
@@ -86,7 +86,7 @@ Blockly.JavaScript.qxmobileui_atom = function() {
 Blockly.JavaScript.qxmobileui_image = function() {
   var code =
     (this.getTitleText(1).trim().length > 0
-     ? this.getTitleText(1) + " = "
+     ? "this.obj_" + this.getTitleText(1) + " = "
      : "") +
     "new qx.ui.mobile.basic.Image(" +
     (Blockly.JavaScript.valueToCode_(this, 0, true) || 'null') +
@@ -98,7 +98,7 @@ Blockly.JavaScript.qxmobileui_image = function() {
 Blockly.JavaScript.qxmobileui_label = function() {
   var code =
     (this.getTitleText(1).trim().length > 0
-     ? this.getTitleText(1) + " = "
+     ? "this.obj_" + this.getTitleText(1) + " = "
      : "") +
     "new qx.ui.mobile.basic.Label(" +
     (Blockly.JavaScript.valueToCode_(this, 0, true) || 'null') +
@@ -110,7 +110,7 @@ Blockly.JavaScript.qxmobileui_label = function() {
 Blockly.JavaScript.qxmobileui_button = function() {
   var code =
     (this.getTitleText(1).trim().length > 0
-     ? this.getTitleText(1) + " = "
+     ? "this.obj_" + this.getTitleText(1) + " = "
      : "") +
     "new qx.ui.mobile.form.Button(" +
     (Blockly.JavaScript.valueToCode_(this, 0, true) || 'null') +
@@ -122,7 +122,7 @@ Blockly.JavaScript.qxmobileui_button = function() {
 Blockly.JavaScript.qxmobileui_checkbox = function() {
   var code =
     (this.getTitleText(1).trim().length > 0
-     ? this.getTitleText(1) + " = "
+     ? "this.obj_" + this.getTitleText(1) + " = "
      : "") +
     "new qx.ui.mobile.form.Checkbox()";
 
@@ -132,7 +132,7 @@ Blockly.JavaScript.qxmobileui_checkbox = function() {
 Blockly.JavaScript.qxmobileui_numberInput = function() {
   var code =
     (this.getTitleText(1).trim().length > 0
-     ? this.getTitleText(1) + " = "
+     ? "this.obj_" + this.getTitleText(1) + " = "
      : "") +
     "new qx.ui.mobile.form.NumberField(" +
     (Blockly.JavaScript.valueToCode_(this, 0, true) || 'null') +
@@ -144,7 +144,7 @@ Blockly.JavaScript.qxmobileui_numberInput = function() {
 Blockly.JavaScript.qxmobileui_passwordInput = function() {
   var code =
     (this.getTitleText(1).trim().length > 0
-     ? this.getTitleText(1) + " = "
+     ? "this.obj_" + this.getTitleText(1) + " = "
      : "") +
     "new qx.ui.mobile.form.PasswordField(" +
     (Blockly.JavaScript.valueToCode_(this, 0, true) || 'null') +
@@ -156,7 +156,7 @@ Blockly.JavaScript.qxmobileui_passwordInput = function() {
 Blockly.JavaScript.qxmobileui_radioButton = function() {
   var code =
     (this.getTitleText(1).trim().length > 0
-     ? this.getTitleText(1) + " = "
+     ? "this.obj_" + this.getTitleText(1) + " = "
      : "") +
     "new qx.ui.mobile.form.RadioButton()";
 
@@ -166,7 +166,7 @@ Blockly.JavaScript.qxmobileui_radioButton = function() {
 Blockly.JavaScript.qxmobileui_selectBox = function() {
   var code =
     (this.getTitleText(1).trim().length > 0
-     ? this.getTitleText(1) + " = "
+     ? "this.obj_" + this.getTitleText(1) + " = "
      : "") +
     "new qx.ui.mobile.form.SelectBox()";
 
@@ -182,7 +182,7 @@ Blockly.JavaScript.qxmobileui_slider = function() {
   var code = [];
   code.push(
     (this.getTitleText(1).trim().length > 0
-     ? this.getTitleText(1) + " = "
+     ? "this.obj_" + this.getTitleText(1) + " = "
      : "") +
     "new qx.ui.mobile.form.NumberField().set(\n" +
     "  {\n");
@@ -215,7 +215,7 @@ Blockly.JavaScript.qxmobileui_slider = function() {
 Blockly.JavaScript.qxmobileui_textArea = function() {
   var code =
     (this.getTitleText(1).trim().length > 0
-     ? this.getTitleText(1) + " = "
+     ? "this.obj_" + this.getTitleText(1) + " = "
      : "") +
     "new qx.ui.mobile.form.TextArea(" +
     (Blockly.JavaScript.valueToCode_(this, 0, true) || 'null') +
@@ -227,7 +227,7 @@ Blockly.JavaScript.qxmobileui_textArea = function() {
 Blockly.JavaScript.qxmobileui_textInput = function() {
   var code =
     (this.getTitleText(1).trim().length > 0
-     ? this.getTitleText(1) + " = "
+     ? "this.obj_" + this.getTitleText(1) + " = "
      : "") +
     "new qx.ui.mobile.form.TextField(" +
     (Blockly.JavaScript.valueToCode_(this, 0, true) || 'null') +
@@ -239,7 +239,7 @@ Blockly.JavaScript.qxmobileui_textInput = function() {
 Blockly.JavaScript.qxmobileui_toggleButton = function() {
   var code =
     (this.getTitleText(1).trim().length > 0
-     ? this.getTitleText(1) + " = "
+     ? "this.obj_" + this.getTitleText(1) + " = "
      : "") +
     "new qx.ui.mobile.form.ToggleButton(" +
     (Blockly.JavaScript.valueToCode_(this, 0, true) || 'false') +
@@ -254,7 +254,7 @@ Blockly.JavaScript.qxmobileui_toggleButton = function() {
 Blockly.JavaScript.qxmobileui_list = function() {
   var code =
     (this.getTitleText(1).trim().length > 0
-     ? this.getTitleText(1) + " = "
+     ? "this.obj_" + this.getTitleText(1) + " = "
      : "") +
     "new qx.ui.mobile.list.List()";
 
