@@ -56,14 +56,24 @@ Blockly.Connection.validSemantics = function(inputSemantics, blockSemantics) {
 
       // It doesn't. Let 'em know.
       alert('Attempt to connect incompatible semantic types: ' +
-            'missing required semantics in block with output');
+            'missing required semantics');
     
       // Connection is disallowed.
       return false;
   }
 
   // See if the semantic types are the same
-  ret = inputSemantics.type === blockSemantics.type;
+  if (typeof inputSemantics.type == "string")
+  {
+    // It's a specific type. Ensure the block type matches.
+    ret = inputSemantics.type === blockSemantics.type;
+  }
+  else
+  {
+    // It's an array of possible types. See if the block semantics is one of
+    // those alowed.
+    ret = inputSemantics.type.indexOf(blockSemantics.type) != -1;
+  }
   
   // If not...
   if (! ret) {
@@ -80,6 +90,7 @@ Blockly.Connection.validateSemantics_ = function(thisBlock, otherConnection) {
   switch(thisBlock.type)
   {
   case Blockly.OUTPUT_VALUE:
+  case Blockly.PREVIOUS_STATEMENT:
     // Is a semantic match required?
     if (! otherConnection.semantics || ! otherConnection.semantics.type) {
 
@@ -93,6 +104,7 @@ Blockly.Connection.validateSemantics_ = function(thisBlock, otherConnection) {
       thisBlock.sourceBlock_.semantics);
     
   case Blockly.INPUT_VALUE:
+  case Blockly.NEXT_STATEMENT:
     // Is a semantic match required?
     if (! thisBlock.semantics ||
         ! thisBlock.semantics.type) {
@@ -108,7 +120,7 @@ Blockly.Connection.validateSemantics_ = function(thisBlock, otherConnection) {
     break;
     
   default:
-    throw 'Unexpected type: ' + this.type;
+    throw 'Unexpected type: ' + thisBlock.type;
   }
 };
 
@@ -184,6 +196,8 @@ Blockly.Connection.prototype.connect = function(otherConnection) {
   } else {
     if (this.targetConnection) {
       throw 'Source connection already connected (block).';
+    } else if (! Blockly.Connection.validateSemantics_(this, otherConnection)) {
+      return null;
     } else if (otherConnection.targetConnection) {
       // Statement blocks may be inserted into the middle of a stack.
       if (this.type != Blockly.PREVIOUS_STATEMENT) {
