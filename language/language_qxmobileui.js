@@ -31,6 +31,7 @@ if (!Blockly.Language) {
 Blockly.Language.qxmobileui_container_composite = {
   // A composite container
   category: "Container",
+  semantics: { type : "container" },
   init: function() {
     this.setPreviousStatement(true);
     this.setNextStatement(true);
@@ -56,7 +57,7 @@ Blockly.Language.qxmobileui_container_composite = {
     }));
 
     this.addInput("", "", Blockly.NEXT_STATEMENT, 
-                  null, { type : "string" });
+                  null, { type : [ "container", "widget" ] });
   }
 };
 
@@ -66,6 +67,7 @@ Blockly.Language.qxmobileui_container_composite = {
  */
 Blockly.Language.qxmobileui_atom = {
   category: "Widget",
+  semantics: { type : "widget" },
   init: function() {
     this.setPreviousStatement(true);
     this.setNextStatement(true);
@@ -92,6 +94,7 @@ Blockly.Language.qxmobileui_atom = {
  */
 Blockly.Language.qxmobileui_image = {
   category: "Widget",
+  semantics: { type : "widget" },
   init: function() {
     this.setPreviousStatement(true);
     this.setNextStatement(true);
@@ -114,6 +117,7 @@ Blockly.Language.qxmobileui_image = {
  */
 Blockly.Language.qxmobileui_label = {
   category: "Widget",
+  semantics: { type : "widget" },
   init: function() {
     this.setPreviousStatement(true);
     this.setNextStatement(true);
@@ -136,6 +140,7 @@ Blockly.Language.qxmobileui_label = {
  */
 Blockly.Language.qxmobileui_button = {
   category: "Widget",
+  semantics: { type : "widget" },
   init: function() {
     this.setPreviousStatement(true);
     this.setNextStatement(true);
@@ -158,6 +163,7 @@ Blockly.Language.qxmobileui_button = {
  */
 Blockly.Language.qxmobileui_checkbox = {
   category: "Widget",
+  semantics: { type : "widget" },
   init: function() {
     this.setPreviousStatement(true);
     this.setNextStatement(true);
@@ -176,6 +182,7 @@ Blockly.Language.qxmobileui_checkbox = {
  */
 Blockly.Language.qxmobileui_numberInput = {
   category: "Widget",
+  semantics: { type : "widget" },
   init: function() {
     this.setPreviousStatement(true);
     this.setNextStatement(true);
@@ -198,6 +205,7 @@ Blockly.Language.qxmobileui_numberInput = {
  */
 Blockly.Language.qxmobileui_passwordInput = {
   category: "Widget",
+  semantics: { type : "widget" },
   init: function() {
     this.setPreviousStatement(true);
     this.setNextStatement(true);
@@ -220,6 +228,7 @@ Blockly.Language.qxmobileui_passwordInput = {
  */
 Blockly.Language.qxmobileui_radioButton = {
   category: "Widget",
+  semantics: { type : "widget" },
   init: function() {
     this.setPreviousStatement(true);
     this.setNextStatement(true);
@@ -238,6 +247,7 @@ Blockly.Language.qxmobileui_radioButton = {
  */
 Blockly.Language.qxmobileui_selectBox = {
   category: "Widget",
+  semantics: { type : "widget" },
   init: function() {
     this.setPreviousStatement(true);
     this.setNextStatement(true);
@@ -256,6 +266,7 @@ Blockly.Language.qxmobileui_selectBox = {
  */
 Blockly.Language.qxmobileui_slider = {
   category: "Widget",
+  semantics: { type : "widget" },
   init: function() {
     this.setPreviousStatement(true);
     this.setNextStatement(true);
@@ -286,6 +297,7 @@ Blockly.Language.qxmobileui_slider = {
  */
 Blockly.Language.qxmobileui_textArea = {
   category: "Widget",
+  semantics: { type : "widget" },
   init: function() {
     this.setPreviousStatement(true);
     this.setNextStatement(true);
@@ -308,6 +320,7 @@ Blockly.Language.qxmobileui_textArea = {
  */
 Blockly.Language.qxmobileui_textInput = {
   category: "Widget",
+  semantics: { type : "widget" },
   init: function() {
     this.setPreviousStatement(true);
     this.setNextStatement(true);
@@ -330,6 +343,7 @@ Blockly.Language.qxmobileui_textInput = {
  */
 Blockly.Language.qxmobileui_toggleButton = {
   category: "Widget",
+  semantics: { type : "widget" },
   init: function() {
     this.setPreviousStatement(true);
     this.setNextStatement(true);
@@ -355,6 +369,7 @@ Blockly.Language.qxmobileui_toggleButton = {
  */
 Blockly.Language.qxmobileui_list = {
   category: "Widget",
+  semantics: { type : "widget" },
   init: function() {
     this.setPreviousStatement(true);
     this.setNextStatement(true);
