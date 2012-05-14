@@ -214,6 +214,7 @@ Blockly.Toolbox.populateOptions_ = function(tree) {
   var TOP_MARGIN = 4;
   var maxWidth = 0;
   var resizeList = [Blockly.Toolbox.svgBackground_];
+/*djl
   for (var x = 0, option; option = options[x]; x++) {
     var gElement = Blockly.ContextMenu.optionToDom(option.text);
     var rectElement = gElement.firstChild;
@@ -230,6 +231,7 @@ Blockly.Toolbox.populateOptions_ = function(tree) {
   }
   // Run a second pass to resize all options to the required width.
   maxWidth += Blockly.ContextMenu.X_PADDING * 2;
+*/
   for (var x = 0; x < resizeList.length; x++) {
     resizeList[x].setAttribute('width', maxWidth);
   }
@@ -243,7 +245,7 @@ Blockly.Toolbox.populateOptions_ = function(tree) {
     }
   }
   Blockly.Toolbox.width = maxWidth;
-
+  
   // Right-click on empty areas of the toolbox does not generate a context menu.
   Blockly.bindEvent_(Blockly.Toolbox.svgGroup_, 'mousedown', null,
       function(e) {
@@ -268,7 +270,7 @@ Blockly.Toolbox.populateOptions_ = function(tree) {
 Blockly.Toolbox.selectOption_ = function(cat, newSelectedOption) {
   Blockly.Toolbox.selectedOption_ = newSelectedOption;
   if (newSelectedOption) {
-    Blockly.addClass_(newSelectedOption, 'blocklyMenuSelected');
+//djl    Blockly.addClass_(newSelectedOption, 'blocklyMenuSelected');
     var blockSet = Blockly.Toolbox.languageTree[cat] || cat;
     Blockly.Toolbox.flyout_.show(blockSet);
   }
@@ -280,7 +282,7 @@ Blockly.Toolbox.selectOption_ = function(cat, newSelectedOption) {
 Blockly.Toolbox.clearSelection = function() {
   var oldSelectedOption = Blockly.Toolbox.selectedOption_;
   if (oldSelectedOption) {
-    Blockly.removeClass_(oldSelectedOption, 'blocklyMenuSelected');
+//djl    Blockly.removeClass_(oldSelectedOption, 'blocklyMenuSelected');
     Blockly.Toolbox.flyout_.hide();
     Blockly.Toolbox.selectedOption_ = null;
   }
