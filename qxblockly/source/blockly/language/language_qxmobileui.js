@@ -35,17 +35,16 @@ Blockly.Language.qxmobileui_container_composite = {
   init: function() {
     this.setPreviousStatement(true);
     this.setNextStatement(true);
-    this.setColour("purple");
+    this.setColour(280);
     this.addTitle("Container");
 
     this.addTitle(new Blockly.FieldDropdown(
-                    'temp',
                     Blockly.Variables.dropdownCreate,
-                    Blockly.Variables.dropdownChange));
+                    Blockly.Variables.dropdownChange))
+      .setText('temp');
 
     this.addTitle("  layout:");
     this.addTitle(new Blockly.FieldDropdown(
-                    "horizontal",
                     function() {
                       return [ "horizontal", "vertical" ];
                     }));
@@ -71,13 +70,13 @@ Blockly.Language.qxmobileui_atom = {
   init: function() {
     this.setPreviousStatement(true);
     this.setNextStatement(true);
-    this.setColour("green");
+    this.setColour(120);
     this.addTitle("Atom");
 
     this.addTitle(new Blockly.FieldDropdown(
-                    'temp',
                     Blockly.Variables.dropdownCreate,
-                    Blockly.Variables.dropdownChange));
+                    Blockly.Variables.dropdownChange))
+      .setText('temp');
 
     // Add the text input
     this.addInput("  label:", "", Blockly.INPUT_VALUE, 
@@ -98,13 +97,13 @@ Blockly.Language.qxmobileui_image = {
   init: function() {
     this.setPreviousStatement(true);
     this.setNextStatement(true);
-    this.setColour("green");
+    this.setColour(120);
     this.addTitle("Image");
 
     this.addTitle(new Blockly.FieldDropdown(
-                    'temp',
                     Blockly.Variables.dropdownCreate,
-                    Blockly.Variables.dropdownChange));
+                    Blockly.Variables.dropdownChange))
+      .setText('temp');
 
     // Add the icon (url) input
     this.addInput("  icon:", "", Blockly.INPUT_VALUE, 
@@ -121,13 +120,13 @@ Blockly.Language.qxmobileui_label = {
   init: function() {
     this.setPreviousStatement(true);
     this.setNextStatement(true);
-    this.setColour("green");
+    this.setColour(120);
     this.addTitle("Label");
 
     this.addTitle(new Blockly.FieldDropdown(
-                    'temp',
                     Blockly.Variables.dropdownCreate,
-                    Blockly.Variables.dropdownChange));
+                    Blockly.Variables.dropdownChange))
+      .setText('temp');
 
     // Add the text input
     this.addInput("  label:", "", Blockly.INPUT_VALUE, 
@@ -144,13 +143,13 @@ Blockly.Language.qxmobileui_button = {
   init: function() {
     this.setPreviousStatement(true);
     this.setNextStatement(true);
-    this.setColour("green");
+    this.setColour(120);
     this.addTitle("Button");
 
     this.addTitle(new Blockly.FieldDropdown(
-                    'temp',
                     Blockly.Variables.dropdownCreate,
-                    Blockly.Variables.dropdownChange));
+                    Blockly.Variables.dropdownChange))
+      .setText('temp');
 
     // Add the button's label
     this.addInput("  label:", "", Blockly.INPUT_VALUE, 
@@ -167,13 +166,13 @@ Blockly.Language.qxmobileui_checkbox = {
   init: function() {
     this.setPreviousStatement(true);
     this.setNextStatement(true);
-    this.setColour("green");
+    this.setColour(120);
     this.addTitle("Checkbox");
 
     this.addTitle(new Blockly.FieldDropdown(
-                    'temp',
                     Blockly.Variables.dropdownCreate,
-                    Blockly.Variables.dropdownChange));
+                    Blockly.Variables.dropdownChange))
+      .setText('temp');
   }
 };
 
@@ -186,13 +185,13 @@ Blockly.Language.qxmobileui_numberInput = {
   init: function() {
     this.setPreviousStatement(true);
     this.setNextStatement(true);
-    this.setColour("green");
+    this.setColour(120);
     this.addTitle("Number Input Field");
 
     this.addTitle(new Blockly.FieldDropdown(
-                    'temp',
                     Blockly.Variables.dropdownCreate,
-                    Blockly.Variables.dropdownChange));
+                    Blockly.Variables.dropdownChange))
+      .setText('temp');
 
     // Add the initial value
     this.addInput("  initial value:", "", Blockly.INPUT_VALUE, 
@@ -209,13 +208,13 @@ Blockly.Language.qxmobileui_passwordInput = {
   init: function() {
     this.setPreviousStatement(true);
     this.setNextStatement(true);
-    this.setColour("green");
+    this.setColour(120);
     this.addTitle("Password Input Field");
 
     this.addTitle(new Blockly.FieldDropdown(
-                    'temp',
                     Blockly.Variables.dropdownCreate,
-                    Blockly.Variables.dropdownChange));
+                    Blockly.Variables.dropdownChange))
+      .setText('temp');
 
     // Add the initial value
     this.addInput("  initial value:", "", Blockly.INPUT_VALUE, 
@@ -232,13 +231,13 @@ Blockly.Language.qxmobileui_radioButton = {
   init: function() {
     this.setPreviousStatement(true);
     this.setNextStatement(true);
-    this.setColour("green");
+    this.setColour(120);
     this.addTitle("Radio Button");
 
     this.addTitle(new Blockly.FieldDropdown(
-                    'temp',
                     Blockly.Variables.dropdownCreate,
-                    Blockly.Variables.dropdownChange));
+                    Blockly.Variables.dropdownChange))
+      .setText('temp');
   }
 };
 
@@ -251,13 +250,13 @@ Blockly.Language.qxmobileui_selectBox = {
   init: function() {
     this.setPreviousStatement(true);
     this.setNextStatement(true);
-    this.setColour("green");
+    this.setColour(120);
     this.addTitle("Select Box");
 
     this.addTitle(new Blockly.FieldDropdown(
-                    'temp',
                     Blockly.Variables.dropdownCreate,
-                    Blockly.Variables.dropdownChange));
+                    Blockly.Variables.dropdownChange))
+      .setText('temp');
   }
 };
 
@@ -270,13 +269,13 @@ Blockly.Language.qxmobileui_slider = {
   init: function() {
     this.setPreviousStatement(true);
     this.setNextStatement(true);
-    this.setColour("green");
+    this.setColour(120);
     this.addTitle("Slider");
 
     this.addTitle(new Blockly.FieldDropdown(
-                    'temp',
                     Blockly.Variables.dropdownCreate,
-                    Blockly.Variables.dropdownChange));
+                    Blockly.Variables.dropdownChange))
+      .setText('temp');
 
     // Add the initial value
     this.addInput("  initial value:", "", Blockly.INPUT_VALUE, 
@@ -301,13 +300,13 @@ Blockly.Language.qxmobileui_textArea = {
   init: function() {
     this.setPreviousStatement(true);
     this.setNextStatement(true);
-    this.setColour("green");
+    this.setColour(120);
     this.addTitle("Text Area");
 
     this.addTitle(new Blockly.FieldDropdown(
-                    'temp',
                     Blockly.Variables.dropdownCreate,
-                    Blockly.Variables.dropdownChange));
+                    Blockly.Variables.dropdownChange))
+      .setText('temp');
 
     // Add the initial value
     this.addInput("  initial value:", "", Blockly.INPUT_VALUE, 
@@ -324,13 +323,13 @@ Blockly.Language.qxmobileui_textInput = {
   init: function() {
     this.setPreviousStatement(true);
     this.setNextStatement(true);
-    this.setColour("green");
+    this.setColour(120);
     this.addTitle("Text Input Field");
 
     this.addTitle(new Blockly.FieldDropdown(
-                    'temp',
                     Blockly.Variables.dropdownCreate,
-                    Blockly.Variables.dropdownChange));
+                    Blockly.Variables.dropdownChange))
+      .setText('temp');
 
     // Add the initial value
     this.addInput("  initial value:", "", Blockly.INPUT_VALUE, 
@@ -347,17 +346,16 @@ Blockly.Language.qxmobileui_toggleButton = {
   init: function() {
     this.setPreviousStatement(true);
     this.setNextStatement(true);
-    this.setColour("green");
+    this.setColour(120);
     this.addTitle("Toggle Button");
 
     this.addTitle(new Blockly.FieldDropdown(
-                    'temp',
                     Blockly.Variables.dropdownCreate,
-                    Blockly.Variables.dropdownChange));
+                    Blockly.Variables.dropdownChange))
+      .setText('temp');
 
     this.addTitle("  initial value:");
     this.addTitle(new Blockly.FieldDropdown(
-                    "off",
                     function() {
                       return [ "off", "on" ];
                     }));
@@ -373,13 +371,13 @@ Blockly.Language.qxmobileui_list = {
   init: function() {
     this.setPreviousStatement(true);
     this.setNextStatement(true);
-    this.setColour("green");
+    this.setColour(120);
     this.addTitle("List");
 
     this.addTitle(new Blockly.FieldDropdown(
-                    'temp',
                     Blockly.Variables.dropdownCreate,
-                    Blockly.Variables.dropdownChange));
+                    Blockly.Variables.dropdownChange))
+      .setText('temp');
   }
 };
 
