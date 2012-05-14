@@ -51,7 +51,7 @@ Blockly.Language.math_integer = {
   semantics: { type : "integer" },
   helpUrl: 'http://en.wikipedia.org/wiki/Integer',
   init: function() {
-    this.setColour('baby');
+    this.setColour(230);
     this.addTitle(new Blockly.FieldTextInput('0', function(text) {
       // Ensure that only a number may be entered.
       // TODO: Handle cases like 'o', 'ten', '1,234', '3,14', etc.
