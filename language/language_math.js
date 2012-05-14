@@ -34,10 +34,28 @@ Blockly.Language.math_number = {
   helpUrl: 'http://en.wikipedia.org/wiki/Number',
   init: function() {
     this.setColour(230);
-    this.addTitle(new Blockly.FieldTextInput('0', function(text) {
+    this.addTitle(new Blockly.FieldTextInput('0.0', function(text) {
       // Ensure that only a number may be entered.
       // TODO: Handle cases like 'o', 'ten', '1,234', '3,14', etc.
       var n = window.parseFloat(text || 0);
+      return window.isNaN(n) ? null : String(n);
+    }));
+    this.setOutput(true);
+    this.setTooltip('A number.');
+  }
+};
+
+Blockly.Language.math_integer = {
+  // Numeric value.
+  category: 'Math',
+  semantics: { type : "integer" },
+  helpUrl: 'http://en.wikipedia.org/wiki/Integer',
+  init: function() {
+    this.setColour('baby');
+    this.addTitle(new Blockly.FieldTextInput('0', function(text) {
+      // Ensure that only a number may be entered.
+      // TODO: Handle cases like 'o', 'ten', '1,234', '3,14', etc.
+      var n = window.parseInt(text || 0, 10);
       return window.isNaN(n) ? null : String(n);
     }));
     this.setOutput(true);
