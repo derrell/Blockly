@@ -462,6 +462,7 @@ Blockly.Mutator.Button.prototype.createDom = function() {
     this.onClickWrapper_ =
       Blockly.bindEvent_(this.svgGroup_, 'click', this, this.action_);
   }
+
   return this.svgGroup_;
 };
 

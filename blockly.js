@@ -415,13 +415,19 @@ Blockly.isTargetInput_ = function(e) {
   return e.target.type == 'textarea' || e.target.type == 'text';
 };
 
+
+Blockly.makeFilename = function(name)
+{
+  return Blockly.pathToBlockly + name;
+};
+
 /**
  * Load an audio file.  Cache it, ready for instantaneous playing.
  * @param {string} name Name of sound.
  * @private
  */
 Blockly.loadAudio_ = function(name) {
-  var sound = new Audio(Blockly.pathToBlockly + 'media/' + name + '.wav');
+  var sound = new Audio(Blockly.makeFilename('media/' + name + '.wav'));
   // To force the browser to load the sound, play it, but stop it immediately.
   // If this starts creating a chip on startup, turn the sound's volume down,
   // or use another caching method such as XHR.
@@ -457,7 +463,8 @@ Blockly.setCursorHand_ = function(closed) {
      http://code.google.com/p/chromium/issues/detail?id=1446 */
   var cursor = '';
   if (closed) {
-    cursor = 'url(' + Blockly.pathToBlockly + 'media/handclosed.cur) 7 3, auto';
+    cursor = 
+      'url(' + Blockly.makeFilename('media/handclosed.cur') + ') 7 3, auto';
   }
   if (Blockly.selected) {
     Blockly.selected.svg_.svgGroup_.style.cursor = cursor;
