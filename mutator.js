@@ -159,7 +159,7 @@ Blockly.Mutator.createDom = function() {
     </g>
   </g>
   */
-  var svgGroup = Blockly.createSvgElement('g', {'class': 'blocklyHidden'},
+  var svgGroup = Blockly.createSvgElement('g', {},
                                           null);
   Blockly.Mutator.svgGroup_ = svgGroup;
   Blockly.Mutator.svgShadow_ = Blockly.createSvgElement('rect',
@@ -226,6 +226,7 @@ Blockly.Mutator.init = function() {
   Blockly.Mutator.workspace_.addTrashcan(Blockly.Mutator.getWorkspaceMetrics_);
   Blockly.Mutator.flyout_.init(Blockly.Mutator.workspace_,
                                Blockly.Mutator.getFlyoutMetrics_);
+  Blockly.addClass_(Blockly.Mutator.svgGroup_, 'blocklyHidden');
 };
 
 /**
