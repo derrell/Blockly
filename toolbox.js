@@ -17,8 +17,6 @@
  * limitations under the License.
  */
 
-var djl = false;
-
 /**
  * @fileoverview Toolbox from whence to create blocks.
  * In the interests of a consistent UI, the toolbox shares some functions and
@@ -217,7 +215,7 @@ Blockly.Toolbox.populateOptions_ = function(tree) {
   var maxWidth = 0;
   var resizeList = [Blockly.Toolbox.svgBackground_];
   
-  if (! djl)
+  if (! Blockly.features.disableSvgToolbox)
   {
     for (var x = 0, option; option = options[x]; x++) {
       var gElement = Blockly.ContextMenu.optionToDom(option.text);
@@ -275,7 +273,9 @@ Blockly.Toolbox.selectOption_ = function(cat, newSelectedOption) {
   Blockly.Toolbox.selectedOption_ = newSelectedOption;
   if (newSelectedOption) {
     
-    ! djl && Blockly.addClass_(newSelectedOption, 'blocklyMenuSelected');
+    if (! Blockly.features.disableSvgToolbox) {
+      Blockly.addClass_(newSelectedOption, 'blocklyMenuSelected');
+    }
     var blockSet = Blockly.Toolbox.languageTree[cat] || cat;
     Blockly.Toolbox.flyout_.show(blockSet);
   }
@@ -287,7 +287,9 @@ Blockly.Toolbox.selectOption_ = function(cat, newSelectedOption) {
 Blockly.Toolbox.clearSelection = function() {
   var oldSelectedOption = Blockly.Toolbox.selectedOption_;
   if (oldSelectedOption) {
-    ! djl && Blockly.removeClass_(oldSelectedOption, 'blocklyMenuSelected');
+    if (! Blockly.features.disableSvgToolbox) {
+      Blockly.removeClass_(oldSelectedOption, 'blocklyMenuSelected');
+    }
     Blockly.Toolbox.flyout_.hide();
     Blockly.Toolbox.selectedOption_ = null;
   }

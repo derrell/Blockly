@@ -26,6 +26,14 @@
 var Blockly = {};
 
 /**
+ * Feature selection
+ */
+Blockly.features = 
+  {
+    disableSvgToolbox : false
+  };
+
+/**
  * Path to Blockly's directory.  Can be relative, absolute, or remote.
  * Used for loading additional resources.
  */
