@@ -65,7 +65,7 @@ Blockly.Language.qxmobileui_container_composite = {
  * in different ways.
  */
 Blockly.Language.qxmobileui_atom = {
-  category: "Widget",
+  category: "Widget\0Basic",
   semantics: { type : "widget" },
   init: function() {
     this.setPreviousStatement(true);
@@ -92,7 +92,7 @@ Blockly.Language.qxmobileui_atom = {
  * An image widget.
  */
 Blockly.Language.qxmobileui_image = {
-  category: "Widget",
+  category: "Widget\0Basic",
   semantics: { type : "widget" },
   init: function() {
     this.setPreviousStatement(true);
@@ -115,7 +115,7 @@ Blockly.Language.qxmobileui_image = {
  * A label widget.
  */
 Blockly.Language.qxmobileui_label = {
-  category: "Widget",
+  category: "Widget\0Basic",
   semantics: { type : "widget" },
   init: function() {
     this.setPreviousStatement(true);
@@ -138,7 +138,7 @@ Blockly.Language.qxmobileui_label = {
  * A button widget.
  */
 Blockly.Language.qxmobileui_button = {
-  category: "Widget",
+  category: "Widget\0Form",
   semantics: { type : "widget" },
   init: function() {
     this.setPreviousStatement(true);
@@ -161,7 +161,7 @@ Blockly.Language.qxmobileui_button = {
  * A checkbox widget.
  */
 Blockly.Language.qxmobileui_checkbox = {
-  category: "Widget",
+  category: "Widget\0Form",
   semantics: { type : "widget" },
   init: function() {
     this.setPreviousStatement(true);
@@ -180,7 +180,7 @@ Blockly.Language.qxmobileui_checkbox = {
  * A number input field widget.
  */
 Blockly.Language.qxmobileui_numberInput = {
-  category: "Widget",
+  category: "Widget\0Form",
   semantics: { type : "widget" },
   init: function() {
     this.setPreviousStatement(true);
@@ -203,7 +203,7 @@ Blockly.Language.qxmobileui_numberInput = {
  * A password input field widget.
  */
 Blockly.Language.qxmobileui_passwordInput = {
-  category: "Widget",
+  category: "Widget\0Form",
   semantics: { type : "widget" },
   init: function() {
     this.setPreviousStatement(true);
@@ -226,7 +226,7 @@ Blockly.Language.qxmobileui_passwordInput = {
  * A radio button widget.
  */
 Blockly.Language.qxmobileui_radioButton = {
-  category: "Widget",
+  category: "Widget\0Form",
   semantics: { type : "widget" },
   init: function() {
     this.setPreviousStatement(true);
@@ -245,7 +245,7 @@ Blockly.Language.qxmobileui_radioButton = {
  * A select box widget.
  */
 Blockly.Language.qxmobileui_selectBox = {
-  category: "Widget",
+  category: "Widget\0Form",
   semantics: { type : "widget" },
   init: function() {
     this.setPreviousStatement(true);
@@ -264,7 +264,7 @@ Blockly.Language.qxmobileui_selectBox = {
  * A slider widget.
  */
 Blockly.Language.qxmobileui_slider = {
-  category: "Widget",
+  category: "Widget\0Basic",
   semantics: { type : "widget" },
   init: function() {
     this.setPreviousStatement(true);
@@ -295,7 +295,7 @@ Blockly.Language.qxmobileui_slider = {
  * A text area widget.
  */
 Blockly.Language.qxmobileui_textArea = {
-  category: "Widget",
+  category: "Widget\0Form",
   semantics: { type : "widget" },
   init: function() {
     this.setPreviousStatement(true);
@@ -318,7 +318,7 @@ Blockly.Language.qxmobileui_textArea = {
  * A text input field widget.
  */
 Blockly.Language.qxmobileui_textInput = {
-  category: "Widget",
+  category: "Widget\0Form",
   semantics: { type : "widget" },
   init: function() {
     this.setPreviousStatement(true);
@@ -341,7 +341,7 @@ Blockly.Language.qxmobileui_textInput = {
  * A toggle button widget.
  */
 Blockly.Language.qxmobileui_toggleButton = {
-  category: "Widget",
+  category: "Widget\0Form",
   semantics: { type : "widget" },
   init: function() {
     this.setPreviousStatement(true);
@@ -366,7 +366,7 @@ Blockly.Language.qxmobileui_toggleButton = {
  * A list widget.
  */
 Blockly.Language.qxmobileui_list = {
-  category: "Widget",
+  category: "Widget\0Form",
   semantics: { type : "widget" },
   init: function() {
     this.setPreviousStatement(true);
