@@ -24,6 +24,59 @@
 Blockly.JavaScript = Blockly.Generator.get('JavaScript');
 
 /**
+ * A Navigation Page's code generator.
+ */
+Blockly.JavaScript.qxmobileui_container_navigationPage = function() {
+  // A Navigation Page
+  var             i;
+  var             block;
+  var             generator = Blockly.Generator.get('JavaScript');
+  var             code = [];
+  var             objName;
+
+  // Determine the object name
+  objName = (this.getTitleText(1).trim().length > 0
+             ? "this.obj_" + this.getTitleText(1)
+             : "this.obj_temp");
+
+
+  // Generate the portion of this block that preceeds its children
+  code.push(
+    objName + " = " +
+    "new qx.ui.mobile.page.NavigationPage(\n" +
+      "  new qx.ui.mobile.layout." +
+      (this.getTitleText(3) == "horizontal" ? "HBox(" : "VBox(") +
+      this.getTitleText(5) + ")" +
+      ");");
+
+  // Set the page's title
+  code.push(objName + ".setTitle(" +
+            "\"Page 1\"" +
+            ");");
+
+  code.push(objName + ".addListener(\"initialize\", function()\n{");
+  code.push("var container = " + objName + ".getContent();");
+
+  // Generate the children
+  for (block = this.getStatementInput(0), i = 0;
+       block; 
+       block = block.nextConnection && block.nextConnection.targetBlock(), ++i)
+  {
+    var blockCode = generator.blockToCode(block, true, true);
+    if (blockCode.trim().length) {
+      code.push("container.add(");
+      code.push(blockCode.trim());
+      code.push(");");
+    }
+  }
+
+  code.push("});");
+  code.push(objName + ".show();");
+
+  return code.join("\n");
+};
+
+/**
  * A composite container's code generator.
  */
 Blockly.JavaScript.qxmobileui_container_composite = function() {
@@ -52,7 +105,7 @@ Blockly.JavaScript.qxmobileui_container_composite = function() {
   {
     var blockCode = generator.blockToCode(block, true, true);
     if (blockCode.trim().length) {
-      code.push("o.add(" + blockCode.trim() + ");");
+      code.push("o.add("+ blockCode.trim() + ");");
     }
   }
 

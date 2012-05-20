@@ -25,8 +25,44 @@ if (!Blockly.Language) {
 }
 
 /**
- * A composite container's code generator.  The container may use either a
- * horizontal or vertical layout.
+ * A Navigation Page (containing a Navigation Bar and a Scroll container.  The
+ * container may use either a horizontal or vertical layout.
+ */
+Blockly.Language.qxmobileui_container_navigationPage = {
+  // A Navigation Page
+  category: "Container",
+  semantics: { type : "top-level" },
+  init: function() {
+    this.setPreviousStatement(false);
+    this.setNextStatement(false);
+    this.setColour(280);
+    this.addTitle("Navigation Page");
+
+    this.addTitle(new Blockly.FieldDropdown(
+                    Blockly.Variables.dropdownCreate,
+                    Blockly.Variables.dropdownChange))
+      .setText('temp');
+
+    this.addTitle("  layout:");
+    this.addTitle(new Blockly.FieldDropdown(
+                    function() {
+                      return [ "horizontal", "vertical" ];
+                    }));
+
+    this.addTitle("  spacing:");
+    this.addTitle(new Blockly.FieldTextInput('0', function(text) {
+      var n = window.parseFloat(text || 0);
+      return window.isNaN(n) ? null : String(n);
+    }));
+
+    this.addInput("", "", Blockly.NEXT_STATEMENT, 
+                  null, { type : [ "container", "widget" ] });
+  }
+};
+
+/**
+ * A composite container.  The container may use either a horizontal or
+ * vertical layout.
  */
 Blockly.Language.qxmobileui_container_composite = {
   // A composite container
