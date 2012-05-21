@@ -58,6 +58,7 @@ Blockly.Python.math_change = function() {
 
 Blockly.Python.math_single = function(opt_dropParens) {
   // Math operators with single operand.
+  Blockly.Python.definitions_['import_math'] = 'import math';
   var argNaked = Blockly.Python.valueToCode_(this, 0, true) || '0';
   var argParen = Blockly.Python.valueToCode_(this, 0, false) || '0';
   var operator = this.getValueLabel(0);
@@ -65,37 +66,40 @@ Blockly.Python.math_single = function(opt_dropParens) {
   // First, handle cases which generate values that don't need parentheses wrapping the code.
   switch (operator) {
     case this.MSG_ABS:
-      code = 'Math.abs(' + argNaked + ')';
+      code = 'math.fabs(' + argNaked + ')';
       break;
     case this.MSG_ROOT:
-      code = 'Math.sqrt(' + argNaked + ')';
+      code = 'math.sqrt(' + argNaked + ')';
       break;
     case this.MSG_LN:
-      code = 'Math.log(' + argNaked + ')';
+      code = 'math.log(' + argNaked + ')';
+      break;
+    case this.MSG_LOG10:
+      code = 'math.log10(' + argNaked + ')';
       break;
     case this.MSG_EXP:
-      code = 'Math.exp(' + argNaked + ')';
+      code = 'math.exp(' + argNaked + ')';
       break;
     case this.MSG_10POW:
-      code = 'Math.pow(10,' + argNaked + ')';
+      code = 'math.pow(10,' + argNaked + ')';
       break;
     case this.MSG_ROUND:
-      code = 'Math.round(' + argNaked + ')';
+      code = 'round(' + argNaked + ')';
       break;
     case this.MSG_ROUNDUP:
-      code = 'Math.ceil(' + argNaked + ')';
+      code = 'math.ceil(' + argNaked + ')';
       break;
     case this.MSG_ROUNDDOWN:
-      code = 'Math.floor(' + argNaked + ')';
+      code = 'math.floor(' + argNaked + ')';
       break;
     case this.MSG_SIN:
-      code = 'Math.sin(' + argParen + ' / 180 * Math.PI)';
+      code = 'math.sin(' + argParen + ' / 180 * Math.PI)';
       break;
     case this.MSG_COS:
-      code = 'Math.cos(' + argParen + ' / 180 * Math.PI)';
+      code = 'math.cos(' + argParen + ' / 180 * Math.PI)';
       break;
     case this.MSG_TAN:
-      code = 'Math.tan(' + argParen + ' / 180 * Math.PI)';
+      code = 'math.tan(' + argParen + ' / 180 * Math.PI)';
       break;
   }
   if (code) {
@@ -106,17 +110,14 @@ Blockly.Python.math_single = function(opt_dropParens) {
     case this.MSG_NEG:
       code = '-' + argParen;
       break;
-    case this.MSG_LOG10:
-      code = 'Math.log(' + argNaked + ') / Math.log(10)';
-      break;
     case this.MSG_ASIN:
-      code = 'Math.asin(' + argNaked + ') / Math.PI * 180';
+      code = 'math.asin(' + argNaked + ') / Math.PI * 180';
       break;
     case this.MSG_ACOS:
-      code = 'Math.acos(' + argNaked + ') / Math.PI * 180';
+      code = 'math.acos(' + argNaked + ') / Math.PI * 180';
       break;
     case this.MSG_ATAN:
-      code = 'Math.atan(' + argNaked + ') / Math.PI * 180';
+      code = 'math.atan(' + argNaked + ') / Math.PI * 180';
       break;
     default:
       throw 'Unknown math operator.';
@@ -201,15 +202,48 @@ Blockly.Python.math_on_list = function() {
         func.push('  }');
         func.push('  return modes;');
         func.push('}');
+=======
+        func.push('def Blockly_math_mode(some_list):');
+        func.push('  modes = []');
+        func.push('  counts = []');
+        func.push('  maxCount = 1');
+        func.push('  for item in some_list:');
+        func.push('    found = False');
+        func.push('    for counted_item, item_count in counts:');
+        func.push('      if counted_item == item:');
+        func.push('        item_count += 1');
+        func.push('        maxCount = max(maxCount, item_count)');
+        func.push('        found = True');
+        func.push('    if not found:');
+        func.push('      counts.append([item, 1])');
+        func.push('  for counted_item, item_count in counts:');
+        func.push('    if item_count == maxCount:');
+        func.push('      modes.append(counted_item)');
+        func.push('  return modes');
+>>>>>>> upstream
         Blockly.Python.definitions_['math_mode'] = func.join('\n');
       }
       code = 'Blockly_math_mode(' + list + ')';
       break;
     case this.MSG_STD_DEV:
-      code = 'Math.max.apply(null,' + list + ')';
+      Blockly.Python.definitions_['import_math'] = 'import math';
+      if (!Blockly.Python.definitions_['math_standard_deviation']) {
+        var func = [];
+        func.push('def Blockly_math_standard_deviation(numbers):');
+        func.push('  n = len(numbers)');
+        func.push('  if n == 0: return');
+        func.push('  mean = sum(numbers)/n');
+        func.push('  variance = float(sum((x - mean)**2 for x in numbers))/n');
+        func.push('  standard_dev = math.sqrt(variance)');
+        func.push('  return standard_dev');
+        Blockly.Python.definitions_['math_standard_deviation'] = func.join('\n');
+      }
+      code = 'Blockly_math_standard_deviation(' + list + ')';
       break;
     case this.MSG_RANDOM_ITEM:
-      code = 'Math.max.apply(null,' + list + ')';
+      Blockly.Python.definitions_['import_random'] = 'import random';
+      code = list + '[random.randint(0,len(' + list + ') - 1)] if ' + list + 
+      ' else None';
       break;
     default:
       throw 'Unknown operator.';
