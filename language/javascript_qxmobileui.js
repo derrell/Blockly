@@ -24,10 +24,48 @@
 Blockly.JavaScript = Blockly.Generator.get('JavaScript');
 
 /**
- * A Navigation Page's code generator.
+ * A navigation container's code generator.
  */
 Blockly.JavaScript.qxmobileui_container_navigation = function() {
-  // A Navigation container
+  // A navigation container
+  var i;
+  var block;
+  var generator = Blockly.Generator.get('JavaScript');
+  var code = [];
+
+  // Generate the portion of this block that preceeds its children
+  code.push("var page;");
+  code.push("this._navigationContainer =" +
+            " new qx.ui.mobile.container.Navigation();",
+            "this.getRoot().add(this._navigationContainer, { flex : 1 });");
+
+  // Show the first child
+  var bShow = true;
+
+  // Generate the children
+  for (block = this.getStatementInput(0), i = 0;
+       block; 
+       block = block.nextConnection && block.nextConnection.targetBlock(), ++i)
+  {
+    var blockCode = generator.blockToCode(block, true, true);
+    if (blockCode.trim().length) {
+      code.push("this._navigationContainer.add(page = ");
+      code.push(blockCode.trim() + ");");
+      if (bShow) {
+        code.push("page.show();");
+        bShow = false;
+      }
+    }
+  }
+
+  return code.join("\n");
+};
+
+/**
+ * A Navigation Page's code generator.
+ */
+Blockly.JavaScript.qxmobileui_container_navigationPage = function() {
+  // A Navigation Page
   var             i;
   var             block;
   var             generator = Blockly.Generator.get('JavaScript');
@@ -42,22 +80,22 @@ Blockly.JavaScript.qxmobileui_container_navigation = function() {
 
   // Generate the portion of this block that preceeds its children
   code.push(
-    objName + " = " +
-    "new qx.ui.mobile.container.Navigation(\n" +
-      "  new qx.ui.mobile.layout." +
-      (this.getTitleText(3) == "horizontal" ? "HBox(" : "VBox(") +
-      this.getTitleText(5) + ")" +
-      ");");
+    objName + " = ",
+    "(qx.lang.Function.bind(function() {",
+    "var o = new qx.ui.mobile.page.NavigationPage(",
+    "  new qx.ui.mobile.layout." +
+    (this.getTitleText(3) == "horizontal" ? "HBox()" : "VBox()") +
+    ");");
 
   // Set the page's title
-  code.push(objName + ".setTitle(" +
+  code.push("o.setTitle(" +
             "\"Page 1\"" +
             ");");
 
-  code.push(objName + ".addListener(");
+  code.push("o.addListener(");
   code.push("\"initialize\", ");
   code.push("function()\n{");
-  code.push("var container = " + objName + ".getContent();");
+  code.push("var container = o.getContent();");
 
   // Generate the children
   for (block = this.getStatementInput(0), i = 0;
@@ -74,7 +112,9 @@ Blockly.JavaScript.qxmobileui_container_navigation = function() {
 
   code.push("},");
   code.push("this);");
-  code.push(objName + ".show();");
+  code.push("return o;");
+  
+  code.push("}, this))()");
 
   return code.join("\n");
 };

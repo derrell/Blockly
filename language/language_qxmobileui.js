@@ -25,16 +25,31 @@ if (!Blockly.Language) {
 }
 
 /**
+ * A navigation container. It automatically consumes the entire screen.
+ */
+Blockly.Language.qxmobileui_container_navigation = {
+  // A composite container
+  category: "Container",
+  semantics: { type : "container" },
+  init: function() {
+    this.setColour(280);
+    this.addTitle("Application Container");
+    this.addInput("", "", Blockly.NEXT_STATEMENT, 
+                  null, { type : [ "page" ] });
+  }
+};
+
+/**
  * A Navigation Page (containing a Navigation Bar and a Scroll container.  The
  * container may use either a horizontal or vertical layout.
  */
-Blockly.Language.qxmobileui_container_navigation = {
+Blockly.Language.qxmobileui_container_navigationPage = {
   // A Navigation Page
   category: "Container",
-  semantics: { type : "top-level" },
+  semantics: { type : "page" },
   init: function() {
-    this.setPreviousStatement(false);
-    this.setNextStatement(false);
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
     this.setColour(280);
     this.addTitle("Navigation Page");
 
@@ -48,12 +63,6 @@ Blockly.Language.qxmobileui_container_navigation = {
                     function() {
                       return [ "vertical", "horizontal" ];
                     }));
-
-    this.addTitle("  spacing:");
-    this.addTitle(new Blockly.FieldTextInput('0', function(text) {
-      var n = window.parseFloat(text || 0);
-      return window.isNaN(n) ? null : String(n);
-    }));
 
     this.addInput("", "", Blockly.NEXT_STATEMENT, 
                   null, { type : [ "container", "widget" ] });
