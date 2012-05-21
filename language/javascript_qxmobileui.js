@@ -26,8 +26,8 @@ Blockly.JavaScript = Blockly.Generator.get('JavaScript');
 /**
  * A Navigation Page's code generator.
  */
-Blockly.JavaScript.qxmobileui_container_navigationPage = function() {
-  // A Navigation Page
+Blockly.JavaScript.qxmobileui_container_navigation = function() {
+  // A Navigation container
   var             i;
   var             block;
   var             generator = Blockly.Generator.get('JavaScript');
@@ -43,7 +43,7 @@ Blockly.JavaScript.qxmobileui_container_navigationPage = function() {
   // Generate the portion of this block that preceeds its children
   code.push(
     objName + " = " +
-    "new qx.ui.mobile.page.NavigationPage(\n" +
+    "new qx.ui.mobile.container.Navigation(\n" +
       "  new qx.ui.mobile.layout." +
       (this.getTitleText(3) == "horizontal" ? "HBox(" : "VBox(") +
       this.getTitleText(5) + ")" +

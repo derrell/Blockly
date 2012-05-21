@@ -28,7 +28,7 @@ if (!Blockly.Language) {
  * A Navigation Page (containing a Navigation Bar and a Scroll container.  The
  * container may use either a horizontal or vertical layout.
  */
-Blockly.Language.qxmobileui_container_navigationPage = {
+Blockly.Language.qxmobileui_container_navigation = {
   // A Navigation Page
   category: "Container",
   semantics: { type : "top-level" },
@@ -115,7 +115,7 @@ Blockly.Language.qxmobileui_atom = {
       .setText('temp');
 
     // Add the text input
-    this.addInput("  label:", "", Blockly.INPUT_VALUE, 
+    this.addInput("  text:", "", Blockly.INPUT_VALUE, 
                   null, { type : "string" });
     
     // Add the icon (url) input
@@ -165,7 +165,7 @@ Blockly.Language.qxmobileui_label = {
       .setText('temp');
 
     // Add the text input
-    this.addInput("  label:", "", Blockly.INPUT_VALUE, 
+    this.addInput("  text:", "", Blockly.INPUT_VALUE, 
                   null, { type : "string" });
   }
 };
@@ -188,7 +188,7 @@ Blockly.Language.qxmobileui_button = {
       .setText('temp');
 
     // Add the button's label
-    this.addInput("  label:", "", Blockly.INPUT_VALUE, 
+    this.addInput("  text:", "", Blockly.INPUT_VALUE, 
                   null, { type : "string" });
   }
 };
