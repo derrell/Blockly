@@ -202,25 +202,6 @@ Blockly.Python.math_on_list = function() {
         func.push('  }');
         func.push('  return modes;');
         func.push('}');
-=======
-        func.push('def Blockly_math_mode(some_list):');
-        func.push('  modes = []');
-        func.push('  counts = []');
-        func.push('  maxCount = 1');
-        func.push('  for item in some_list:');
-        func.push('    found = False');
-        func.push('    for counted_item, item_count in counts:');
-        func.push('      if counted_item == item:');
-        func.push('        item_count += 1');
-        func.push('        maxCount = max(maxCount, item_count)');
-        func.push('        found = True');
-        func.push('    if not found:');
-        func.push('      counts.append([item, 1])');
-        func.push('  for counted_item, item_count in counts:');
-        func.push('    if item_count == maxCount:');
-        func.push('      modes.append(counted_item)');
-        func.push('  return modes');
->>>>>>> upstream
         Blockly.Python.definitions_['math_mode'] = func.join('\n');
       }
       code = 'Blockly_math_mode(' + list + ')';
