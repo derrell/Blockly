@@ -54,7 +54,9 @@ Blockly.JavaScript.qxmobileui_container_navigationPage = function() {
             "\"Page 1\"" +
             ");");
 
-  code.push(objName + ".addListener(\"initialize\", function()\n{");
+  code.push(objName + ".addListener(");
+  code.push("\"initialize\", ");
+  code.push("function()\n{");
   code.push("var container = " + objName + ".getContent();");
 
   // Generate the children
