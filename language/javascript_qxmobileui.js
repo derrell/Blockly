@@ -70,7 +70,8 @@ Blockly.JavaScript.qxmobileui_container_navigationPage = function() {
     }
   }
 
-  code.push("});");
+  code.push("},");
+  code.push("this);");
   code.push(objName + ".show();");
 
   return code.join("\n");

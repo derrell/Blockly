@@ -46,7 +46,7 @@ Blockly.Language.qxmobileui_container_navigationPage = {
     this.addTitle("  layout:");
     this.addTitle(new Blockly.FieldDropdown(
                     function() {
-                      return [ "horizontal", "vertical" ];
+                      return [ "vertical", "horizontal" ];
                     }));
 
     this.addTitle("  spacing:");
@@ -82,7 +82,7 @@ Blockly.Language.qxmobileui_container_composite = {
     this.addTitle("  layout:");
     this.addTitle(new Blockly.FieldDropdown(
                     function() {
-                      return [ "horizontal", "vertical" ];
+                      return [ "vertical", "horizontal" ];
                     }));
 
     this.addTitle("  spacing:");
