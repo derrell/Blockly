@@ -51,6 +51,10 @@ Blockly.Xml.workspaceToDom = function(blockGroup) {
 Blockly.Xml.blockToDom_ = function(block) {
   var element = document.createElement('block');
   element.setAttribute('type', block.type);
+  if (block.id) {
+    // Add the block id
+    element.setAttribute('id', block.id);
+  }
   if (block.mutationToDom) {
     // Custom data for an advanced block.
     element.appendChild(block.mutationToDom());
@@ -208,6 +212,11 @@ Blockly.Xml.domToBlock_ = function(blockGroup, xmlBlock) {
   var prototypeName = xmlBlock.getAttribute('type');
   var block = new Blockly.Block(blockGroup, prototypeName);
   block.initSvg();
+
+  var id = xmlBlock.getAttribute('id');
+  if (id) {
+    block.id = id;
+  }
 
   var inline = xmlBlock.getAttribute('inline');
   if (inline) {
