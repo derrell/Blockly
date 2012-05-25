@@ -19,8 +19,6 @@
 
 /**
  * @fileoverview Flyout tray containing blocks which may be created.
- * In the interests of a consistent UI, the toolbox shares some functions and
- * properties with the context menu.
  * @author fraser@google.com (Neil Fraser)
  */
 
@@ -31,6 +29,11 @@
 Blockly.Flyout = function() {
   this.workspace_ = new Blockly.Workspace(false);
 };
+
+/**
+ * Does the flyout automatically close when a block is created?
+ */
+Blockly.Flyout.prototype.autoClose = true;
 
 /**
  * Corner radius of the flyout background.
@@ -175,7 +178,7 @@ Blockly.Flyout.prototype.position_ = function() {
 Blockly.Flyout.prototype.hide = function() {
   this.svgGroup_.style.display = 'none';
   // Delete all the blocks.
-  var blocks = this.workspace_.getTopBlocks();
+  var blocks = this.workspace_.getTopBlocks(false);
   for (var x = 0, block; block = blocks[x]; x++) {
     block.destroy();
   }
@@ -200,7 +203,7 @@ Blockly.Flyout.prototype.show = function(names) {
   // Create the blocks to be shown in this flyout.
   var blocks = [];
   var gaps = [];
-  if (names == Blockly.Toolbox.VARIABLE_CAT) {
+  if (names == Blockly.VARIABLE_CAT) {
     // Special category for variables.
     var variableList = Blockly.Variables.allVariables();
     variableList.sort(Blockly.caseInsensitiveComparator);
@@ -214,7 +217,9 @@ Blockly.Flyout.prototype.show = function(names) {
         continue;
       }
       var getBlock = new Blockly.Block(this.workspace_, 'variables_set');
+      getBlock.initSvg();
       var setBlock = new Blockly.Block(this.workspace_, 'variables_get');
+      setBlock.initSvg();
       if (variableList[i] === null) {
         defaultVariable = getBlock.getTitleText(1);
       } else {
@@ -227,6 +232,7 @@ Blockly.Flyout.prototype.show = function(names) {
   } else {
     for (var i = 0, name; name = names[i]; i++) {
       var block = new Blockly.Block(this.workspace_, name);
+      block.initSvg();
       blocks[i] = block;
       gaps[i] = margin * 2;
     }
@@ -244,12 +250,12 @@ Blockly.Flyout.prototype.show = function(names) {
     // try this, I'm sure.  Kill the comment.
     Blockly.Comment && block.setCommentText(null);
     block.render();
-    var bBox = block.svg_.svgGroup_.getBBox();
+    var bBox = block.getSvgRoot().getBBox();
     var x = Blockly.RTL ? 0 : margin + Blockly.BlockSvg.TAB_WIDTH;
     block.moveBy(x, cursorY);
     flyoutWidth = Math.max(flyoutWidth, bBox.width);
     cursorY += bBox.height + gaps[i];
-    Blockly.bindEvent_(block.svg_.svgGroup_, 'mousedown', null,
+    Blockly.bindEvent_(block.getSvgRoot(), 'mousedown', null,
                        Blockly.Flyout.createBlockFunc_(this, block));
   }
   flyoutWidth += margin + Blockly.BlockSvg.TAB_WIDTH + margin / 2 +
@@ -262,7 +268,7 @@ Blockly.Flyout.prototype.show = function(names) {
     }
     // Create an invisible rectangle over the block to act as a button.  Just
     // using the block as a button is poor, since blocks have holes in them.
-    var bBox = block.svg_.svgGroup_.getBBox();
+    var bBox = block.getSvgRoot().getBBox();
     var xy = block.getRelativeToSurfaceXY();
     var rect = Blockly.createSvgElement('rect',
         {width: bBox.width, height: bBox.height,
@@ -284,7 +290,7 @@ Blockly.Flyout.prototype.show = function(names) {
 /**
  * Create a copy of this block on the workspace.
  * @param {!Blockly.Flyout} flyout Instance of the flyout.
- * @param {!Blockly.Block} originBlock The toolbox block to copy.
+ * @param {!Blockly.Block} originBlock The flyout block to copy.
  * @return {!Function} Function to call when block is clicked.
  * @private
  */
@@ -294,14 +300,17 @@ Blockly.Flyout.createBlockFunc_ = function(flyout, originBlock) {
       // Right-click.  Don't create a block, let the context menu show.
       return;
     }
-    // Create the new block by cloning the block in the toolbox (via XML).
+    // Create the new block by cloning the block in the flyout (via XML).
     var xml = Blockly.Xml.blockToDom_(originBlock);
     var block = Blockly.Xml.domToBlock_(flyout.targetWorkspace_, xml);
-    // Place it in the same spot as the toolbox copy.
-    var xyOld = Blockly.getAbsoluteXY_(originBlock.svg_.svgGroup_);
+    // Place it in the same spot as the flyout copy.
+    var xyOld = Blockly.getAbsoluteXY_(originBlock.getSvgRoot());
     var xyNew = Blockly.getAbsoluteXY_(flyout.targetWorkspace_.getCanvas());
     block.moveBy(xyOld.x - xyNew.x, xyOld.y - xyNew.y);
     block.render();
+    if (flyout.autoClose) {
+      flyout.hide();
+    }
     // Start a dragging operation on the new block.
     block.onMouseDown_(e);
   };

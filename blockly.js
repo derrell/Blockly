@@ -76,6 +76,11 @@ Blockly.HSV_SATURATION = 0.45;
 Blockly.HSV_VALUE = 0.65;
 
 /**
+ * Category used for variables.
+ */
+Blockly.VARIABLE_CAT = 'variables';
+
+/**
  * Convert a hue (HSV model) into an RGB hex triplet.
  * @param {number} hue Hue on a colour wheel (0-360).
  * @return {string} RGB code, e.g. '#84c'.
@@ -468,7 +473,7 @@ Blockly.setCursorHand_ = function(closed) {
       'url(' + Blockly.makeFilename('media/handclosed.cur') + ') 7 3, auto';
   }
   if (Blockly.selected) {
-    Blockly.selected.svg_.svgGroup_.style.cursor = cursor;
+    Blockly.selected.getSvgRoot().style.cursor = cursor;
   }
   // Set cursor on the SVG surface as well as block so that rapid movements
   // don't result in cursor changing to an arrow momentarily.
@@ -549,6 +554,15 @@ Blockly.setMainWorkspaceMetrics = function(xyRatio) {
       (Blockly.mainWorkspace.scrollY + metrics.absoluteTop) + ')';
   Blockly.mainWorkspace.getCanvas().setAttribute('transform', translation);
   Blockly.commentCanvas.setAttribute('transform', translation);
+};
+
+/**
+ * Rerender certain elements which might have had their sizes changed by the
+ * CSS file and thus need realigning.
+ * Called when the CSS file has finally loaded.
+ */
+Blockly.cssLoaded = function() {
+  Blockly.Toolbox && Blockly.Toolbox.redraw();
 };
 
 // Utility methods.
@@ -767,4 +781,26 @@ Blockly.caseInsensitiveComparator = function(a, b) {
     return -1;
   }
   return 0;
+};
+
+/**
+ * Return a random id that's 8 letters long.
+ * 26*(26+10+4)^7 = 4,259,840,000,000
+ * @return {string} Random id.
+ */
+Blockly.uniqueId = function() {
+  // First character must be a letter.
+  // IE is case insensitive (in violation of the W3 spec).
+  var soup = 'abcdefghijklmnopqrstuvwxyz';
+  var id = soup.charAt(Math.random() * soup.length);
+  // Subsequent characters may include these.
+  soup += '0123456789-_:.';
+  for (var x = 1; x < 8; x++) {
+    id += soup.charAt(Math.random() * soup.length);
+  }
+  // Don't allow IDs with '--' in them since it might close a comment.
+  if (id.indexOf('--') != -1) {
+    id = Blockly.uniqueId();
+  }
+  return id;
 };

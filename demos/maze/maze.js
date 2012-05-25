@@ -71,10 +71,14 @@ Maze.pidList = [];
  * Initialize Blockly and the maze.  Called on page load.
  */
 Maze.init = function(blockly) {
-  //window.onbeforeunload = function() {
-  //  return 'Leaving this page will result in the loss of your work.';
-  //};
   window.Blockly = blockly;
+
+  window.onbeforeunload = function() {
+    if (Blockly.mainWorkspace.getAllBlocks().length > 1) {
+      return 'Leaving this page will result in the loss of your work.';
+    }
+    return null;
+  };
 
   // Load the editor with a starting block.
   var xml = Blockly.Xml.textToDom(
@@ -118,6 +122,9 @@ Maze.init = function(blockly) {
   Maze.reset();
 };
 
+/**
+ * Reset the maze to the start position and kill any pending animation tasks.
+ */
 Maze.reset = function() {
   Maze.pegmanX = Maze.start_.x;
   Maze.pegmanY = Maze.start_.y;
@@ -130,15 +137,23 @@ Maze.reset = function() {
   Maze.pidList = [];
 };
 
+/**
+ * Click the run button.  Start the program.
+ */
 Maze.runButtonClick = function() {
   document.getElementById('runButton').style.display = 'none';
   document.getElementById('resetButton').style.display = 'inline';
+  Blockly.mainWorkspace.traceOn(true);
   Maze.execute();
 };
 
+/**
+ * Click the reset button.  Reset the maze.
+ */
 Maze.resetButtonClick = function() {
   document.getElementById('runButton').style.display = 'inline';
   document.getElementById('resetButton').style.display = 'none';
+  Blockly.mainWorkspace.traceOn(false);
   Maze.reset();
 };
 
@@ -171,11 +186,14 @@ Maze.animate = function() {
   Maze.pidList = [];
   var action;
   do {
-    action = Maze.path.shift();
-    if (!action) {
+    var pair = Maze.path.shift();
+    if (!pair) {
       return;
     }
+    action = pair[0];
+    Blockly.mainWorkspace.highlightBlock(pair[1]);
   } while (action == 'look');
+
 
   if (action == 'north') {
     Maze.schedule([Maze.pegmanX, Maze.pegmanY, Maze.pegmanD * 4],
@@ -353,10 +371,11 @@ Maze.checkTimeout = function() {
 /**
  * Move pegman forwards or backwards.
  * @param {number} direction Direction to move (0 = forward, 1 = backward).
+ * @param {string} id ID of block that triggered this action.
  */
-Maze.move = function(direction) {
+Maze.move = function(direction, id) {
   if (Maze.isWall(direction ? 3: 0)) {
-    Maze.path.push('fail_' + (direction ? 'backwards': 'forwards'));
+    Maze.path.push(['fail_' + (direction ? 'backwards': 'forwards'), id]);
     return;
   }
   var effectiveDirection = Maze.pegmanD;
@@ -364,22 +383,24 @@ Maze.move = function(direction) {
     // Moving backwards.  Flip the effective direction.
     effectiveDirection = Maze.constrainDirection4(effectiveDirection + 2);
   }
+  var command;
   if (effectiveDirection == Maze.NORTH) {
     Maze.pegmanY--;
-    Maze.path.push('north');
+    command = 'north';
   } else if (effectiveDirection == Maze.EAST) {
     Maze.pegmanX++;
-    Maze.path.push('east');
+    command = 'east';
   } else if (effectiveDirection == Maze.SOUTH) {
     Maze.pegmanY++;
-    Maze.path.push('south');
+    command = 'south';
   } else if (effectiveDirection == Maze.WEST) {
     Maze.pegmanX--;
-    Maze.path.push('west');
+    command = 'west';
   }
+  Maze.path.push([command, id]);
   if (Maze.pegmanX == Maze.finish_.x && Maze.pegmanY == Maze.finish_.y) {
     // Finished.  Terminate the user's program.
-    Maze.path.push('finish');
+    Maze.path.push(['finish', null]);
     throw true;
   }
 };
@@ -387,17 +408,18 @@ Maze.move = function(direction) {
 /**
  * Turn pegman left or right.
  * @param {number} direction Direction to turn (0 = left, 1 = right).
+ * @param {string} id ID of block that triggered this action.
  */
-Maze.turn = function(direction) {
+Maze.turn = function(direction, id) {
   Maze.checkTimeout();
   if (direction) {
     // Right turn (clockwise).
     Maze.pegmanD++;
-    Maze.path.push('right');
+    Maze.path.push(['right', id]);
   } else {
     // Left turn (counterclockwise).
     Maze.pegmanD--;
-    Maze.path.push('left');
+    Maze.path.push(['left', id]);
   }
   Maze.pegmanD = Maze.constrainDirection4(Maze.pegmanD);
 };
@@ -406,11 +428,12 @@ Maze.turn = function(direction) {
  * Is there a wall next to pegman?
  * @param {number} direction Direction to look
  *     (0 = ahead, 1 = left, 2 = right, 3 = behind).
+ * @param {?string} id ID of block that triggered this action or null if none.
  * @return {boolean} True if there is a wall.
  */
-Maze.isWall = function(direction) {
+Maze.isWall = function(direction, id) {
   Maze.checkTimeout();
-  Maze.path.push('look');
+  Maze.path.push(['look', id]);
   var effectiveDirection = Maze.pegmanD;
   if (direction == 1) {  // Left
     effectiveDirection--; 

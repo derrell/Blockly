@@ -3,7 +3,7 @@
   <title>Blockly Demo: RTL</title>
   <script type="text/javascript" src="../../blockly.js"></script>
   <script type="text/javascript" src="../../block.js"></script>
-  <script type="text/javascript" src="../../blockSvg.js"></script>
+  <script type="text/javascript" src="../../block_svg.js"></script>
   <script type="text/javascript" src="../../comment.js"></script>
   <script type="text/javascript" src="../../connection.js"></script>
   <script type="text/javascript" src="../../contextmenu.js"></script>
@@ -45,9 +45,11 @@
   </style>
   <script>
     function init() {
-      Blockly.pathToBlockly = '../../';
-      Blockly.inject(document.getElementById('svgDiv'), {rtl: true});
+      Blockly.inject(document.getElementById('svgDiv'), {path: '../../', rtl: true});
       Blockly.Xml.domToWorkspace(Blockly.mainWorkspace, document.getElementById('startBlocks'));
+      //window.onbeforeunload = function() {
+      //  return 'Leaving this page will result in the loss of your work.';
+      //};
     }
   </script>
 </head>

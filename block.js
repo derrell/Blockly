@@ -30,6 +30,7 @@
  * @constructor
  */
 Blockly.Block = function(workspace, prototypeName) {
+  this.id = Blockly.uniqueId();
   this.titleRow = [];
   this.outputConnection = null;
   this.nextConnection = null;
@@ -48,11 +49,7 @@ Blockly.Block = function(workspace, prototypeName) {
 
   this.isInFlyout = false;
   this.workspace = workspace;
-  // Create required elements: the group and the path.
-  this.svg_ = new Blockly.BlockSvg(this);
 
-  Blockly.bindEvent_(this.svg_.svgGroup_, 'mousedown', this, this.onMouseDown_);
-  workspace.getCanvas().appendChild(this.svg_.svgGroup_);
   workspace.addTopBlock(this);
 
   // Copy the type-specific functions and data from the prototype.
@@ -70,6 +67,31 @@ Blockly.Block = function(workspace, prototypeName) {
   if (typeof this.init == 'function') {
     this.init();
   }
+};
+
+/**
+ * Pointer to SVG representation of the block.
+ * @type {Blockly.BlockSvg}
+ */
+Blockly.Block.prototype.svg_ = null;
+
+/**
+ * Create and initialize the SVG representation of the block.
+ */
+Blockly.Block.prototype.initSvg = function() {
+  this.svg_ = new Blockly.BlockSvg(this);
+  this.svg_.init();
+  Blockly.bindEvent_(this.svg_.getRootNode(), 'mousedown', this,
+                     this.onMouseDown_);
+  this.workspace.getCanvas().appendChild(this.svg_.getRootNode());
+};
+
+/**
+ * Return the root node of the SVG or null if none exists.
+ * @return {Node} The root SVG node (probably a group).
+ */
+Blockly.Block.prototype.getSvgRoot = function() {
+  return this.svg_ && this.svg_.getRootNode();
 };
 
 /**
@@ -123,6 +145,8 @@ Blockly.Block.prototype.select = function() {
   }
   Blockly.selected = this;
   this.svg_.addSelect();
+  Blockly.fireUiEvent(Blockly.svgDoc, this.workspace.getCanvas(),
+                      'blocklySelectChange');
 };
 
 /**
@@ -131,6 +155,8 @@ Blockly.Block.prototype.select = function() {
 Blockly.Block.prototype.unselect = function() {
   Blockly.selected = null;
   this.svg_.removeSelect();
+  Blockly.fireUiEvent(Blockly.svgDoc, this.workspace.getCanvas(),
+                      'blocklySelectChange');
 };
 
 /**
@@ -205,8 +231,10 @@ Blockly.Block.prototype.destroy = function(gentle) {
     connections[x].destroy();
   }
   // Destroy the SVG and break circular references.
-  this.svg_.destroy();
-  this.svg_ = null;
+  if (this.svg_) {
+    this.svg_.destroy();
+    this.svg_ = null;
+  }
 };
 
 /**
@@ -215,7 +243,7 @@ Blockly.Block.prototype.destroy = function(gentle) {
  * @return {!Object} Object with .x and .y properties.
  */
 Blockly.Block.prototype.getRelativeToSurfaceXY = function() {
-  var element = this.svg_.svgGroup_;
+  var element = this.svg_.getRootNode();
   var x = 0;
   var y = 0;
   do {
@@ -235,7 +263,7 @@ Blockly.Block.prototype.getRelativeToSurfaceXY = function() {
  */
 Blockly.Block.prototype.moveBy = function(dx, dy) {
   var xy = this.getRelativeToSurfaceXY();
-  this.svg_.svgGroup_.setAttribute('transform',
+  this.svg_.getRootNode().setAttribute('transform',
       'translate(' + (xy.x + dx) + ', ' + (xy.y + dy) + ')');
   this.moveConnections_(dx, dy);
 };
@@ -566,7 +594,7 @@ Blockly.Block.prototype.onMouseMove_ = function(e) {
     // Unrestricted dragging.
     var x = this.startDragX + dx;
     var y = this.startDragY + dy;
-    this.svg_.svgGroup_.setAttribute('transform',
+    this.svg_.getRootNode().setAttribute('transform',
                                      'translate(' + x + ', ' + y + ')');
     // Drag all the nested comments.
     for (var x = 0; x < this.draggedComments_.length; x++) {
@@ -693,8 +721,8 @@ Blockly.Block.prototype.setParent = function(newParent) {
     }
     // Move this block up the DOM.  Keep track of x/y translations.
     var xy = this.getRelativeToSurfaceXY();
-    this.workspace.getCanvas().appendChild(this.svg_.svgGroup_);
-    this.svg_.svgGroup_.setAttribute('transform',
+    this.workspace.getCanvas().appendChild(this.svg_.getRootNode());
+    this.svg_.getRootNode().setAttribute('transform',
         'translate(' + xy.x + ', ' + xy.y + ')');
 
     // Disconnect from superior blocks.
@@ -717,7 +745,7 @@ Blockly.Block.prototype.setParent = function(newParent) {
     newParent.childBlocks_.push(this);
 
     var oldXY = this.getRelativeToSurfaceXY();
-    newParent.svg_.svgGroup_.appendChild(this.svg_.svgGroup_);
+    newParent.svg_.getRootNode().appendChild(this.svg_.getRootNode());
     var newXY = this.getRelativeToSurfaceXY();
     // Move the connections to match the child's new position.
     this.moveConnections_(newXY.x - oldXY.x, newXY.y - oldXY.y);
@@ -755,7 +783,9 @@ Blockly.Block.prototype.getColour = function() {
  */
 Blockly.Block.prototype.setColour = function(colourHue) {
   this.colourHue_ = colourHue;
-  this.svg_.setColour(colourHue);
+  if (this.svg_) {
+    this.svg_.updateColour();
+  }
   if (this.comment) {
     this.comment.updateColour();
   }
@@ -789,7 +819,9 @@ Blockly.Block.prototype.addTitle = function(title, opt_index) {
     this.titleRow.push(title);
   }
 
-  title.init(this);
+  if (this.svg_) {
+    title.init(this);
+  }
   if (this.rendered) {
     this.render();
     // Adding a title will cause the block to change shape.
@@ -941,7 +973,7 @@ Blockly.Block.prototype.setCollapsed = function(collapsed) {
       }
       var child = input.targetBlock();
       if (child) {
-        child.svg_.svgGroup_.style.display = display;
+        child.svg_.getRootNode().style.display = display;
         if (collapsed) {
           child.rendered = false;
         }
@@ -990,7 +1022,9 @@ Blockly.Block.prototype.addInput = function(label, tooltip,
       // Editable label.
       textElement = label;
     }
-    textElement.init(this);
+    if (this.svg_) {
+      textElement.init(this);
+    }
     if (tooltip) {
       textElement.setTooltip(tooltip);
     }
@@ -1000,7 +1034,9 @@ Blockly.Block.prototype.addInput = function(label, tooltip,
     // Add input to list.
     input = new Blockly.FieldDropdown(
         Blockly.Variables.dropdownCreate, Blockly.Variables.dropdownChange);
-    input.init(this);
+    if (this.svg_) {
+      input.init(this);
+    }
     input.type = Blockly.LOCAL_VARIABLE;
   } else {
     // Add input to list.
@@ -1196,6 +1232,9 @@ Blockly.Block.prototype.setMutator = function(mutator) {
     this.mutator.destroy();
   }
   this.mutator = mutator;
+  if (this.svg_) {
+    mutator.createIcon();
+  }
 };
 
 /**
