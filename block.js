@@ -350,6 +350,14 @@ Blockly.Block.prototype.onMouseUp_ = function(e) {
     var xy = this.getRelativeToSurfaceXY();
     var dx = xy.x - this.startDragX;
     var dy = xy.y - this.startDragY;
+    Blockly.publish && Blockly.publish(
+      {
+        startX : this.startDragX,
+        startY : this.startDragY,
+        dx     : dx,
+        dy     : dy
+      },
+      "dragEnd");
     this.moveConnections_(dx, dy);
     var selected = this;
     // Fire an event to allow scrollbars to resize.
@@ -363,12 +371,36 @@ Blockly.Block.prototype.onMouseUp_ = function(e) {
     Blockly.playAudio('click');
     // Connect two blocks together.
     Blockly.localConnection_.connect(Blockly.highlightedConnection_);
+    var thisConn = Blockly.localConnection_;
+    var thisBlock = thisConn.sourceBlock_;
+    var otherConn = Blockly.highlightedConnection_;
+    var otherBlock = otherConn.sourceBlock_;
+    Blockly.publish && Blockly.publish(
+      {
+        thisOne :
+        {
+          block       : thisBlock.id,
+          connection  : thisBlock.inputList.indexOf(thisConn)
+        },
+        
+        otherOne :
+        {
+          block      : otherBlock.id,
+          connection : otherBlock.inputList.indexOf(otherConn)
+        }
+      },
+      "connect");
     if (this.workspace.trashcan && this.workspace.trashcan.isOpen) {
       // Don't throw an object in the trash can if it just got connected.
       Blockly.Trashcan.close(this.workspace.trashcan);
     }
   } else if (this.workspace.trashcan && this.workspace.trashcan.isOpen) {
     Blockly.playAudio('delete');
+    Blockly.publish && Blockly.publish(
+      {
+        block : Blockly.selected.id
+      },
+      "destroy");
     Blockly.selected.destroy(false);
     var trashcan = this.workspace.trashcan;
     var closure = function() {

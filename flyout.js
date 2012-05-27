@@ -308,9 +308,20 @@ Blockly.Flyout.createBlockFunc_ = function(flyout, originBlock) {
     var xyNew = Blockly.getAbsoluteXY_(flyout.targetWorkspace_.getCanvas());
     block.moveBy(xyOld.x - xyNew.x, xyOld.y - xyNew.y);
     block.render();
+
     if (flyout.autoClose) {
       flyout.hide();
     }
+
+    var xy = block.getRelativeToSurfaceXY();
+    Blockly.publish && Blockly.publish(
+      {
+        block : block.id,
+        x     : xy.x,
+        y     : xy.y
+      },
+      "createBlock");
+
     // Start a dragging operation on the new block.
     block.onMouseDown_(e);
   };
