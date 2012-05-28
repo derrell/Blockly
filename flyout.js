@@ -316,6 +316,7 @@ Blockly.Flyout.createBlockFunc_ = function(flyout, originBlock) {
     var xy = block.getRelativeToSurfaceXY();
     Blockly.publish && Blockly.publish(
       {
+        type  : block.type,
         block : block.id,
         x     : xy.x,
         y     : xy.y
