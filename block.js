@@ -373,20 +373,56 @@ Blockly.Block.prototype.onMouseUp_ = function(e) {
     Blockly.localConnection_.connect(Blockly.highlightedConnection_);
     var thisConn = Blockly.localConnection_;
     var thisBlock = thisConn.sourceBlock_;
+    var thisConnId;
     var otherConn = Blockly.highlightedConnection_;
     var otherBlock = otherConn.sourceBlock_;
+    var otherConnId;
+    
+    // Determine which connection this is. If it's in the input list, we'll
+    // have an index of 0 or greater. Otherwise, identify the connection by
+    // name.
+    function getConnId(block, conn)
+    {
+      // First, see if it's in the input list
+      var connId = block.inputList.indexOf(conn);
+      
+      // Was it?
+      if (connId == -1)
+      {
+        // Nope. Was it the output connection?
+        if (conn === block.outputConnection)
+        {
+          connId = "output";
+        }
+        else if (conn === block.previousConnection)
+        {
+          connId = "prev";
+        }
+        else if (conn === block.nextConnection)
+        {
+          connId = "next";
+        }
+        else
+        {
+          throw new Error("Could not locate connection");
+        }
+      }
+      
+      return connId;
+    }
+
     Blockly.publish && Blockly.publish(
       {
         thisOne :
         {
           block       : thisBlock.id,
-          connection  : thisBlock.inputList.indexOf(thisConn)
+          connection  : getConnId(thisBlock, thisConn)
         },
         
         otherOne :
         {
           block      : otherBlock.id,
-          connection : otherBlock.inputList.indexOf(otherConn)
+          connection : getConnId(otherBlock, otherConn)
         }
       },
       "connect");
