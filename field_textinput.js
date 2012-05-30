@@ -215,6 +215,14 @@ Blockly.FieldTextInput.prototype.closeEditor_ = function(save) {
         text = htmlInput.defaultValue;
       }
     }
+
+    Blockly.publish && Blockly.publish(
+      {
+        block : this.sourceBlock_.id,
+        index : this.sourceBlock_.titleRow.indexOf(this),
+        text  : text
+      },
+      "setTitleText");
   } else {
     // Cancelling edit.
     text = htmlInput.defaultValue;

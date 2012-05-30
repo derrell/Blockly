@@ -184,6 +184,16 @@ Blockly.Variables.dropdownChange = function(text) {
                       oldVar);
     if (text) {
       Blockly.Variables.renameVariable(oldVar, text);
+      this.setText(text);
+      
+      Blockly.publish && Blockly.publish(
+        {
+          block  : this.sourceBlock_.id,
+          index  : this.sourceBlock_.titleRow.indexOf(this),
+          oldVar : oldVar,
+          newVar : text
+        },
+        "renameVariable");
     }
   } else {
     if (text == Blockly.MSG_NEW_VARIABLE) {
@@ -197,6 +207,14 @@ Blockly.Variables.dropdownChange = function(text) {
     if (text) {
       this.setText(text);
     }
+
+    Blockly.publish && Blockly.publish(
+      {
+        block  : this.sourceBlock_.id,
+        index  : this.sourceBlock_.titleRow.indexOf(this),
+        newVar : text
+      },
+      "newVariable");
   }
 };
 

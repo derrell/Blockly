@@ -352,6 +352,7 @@ Blockly.Block.prototype.onMouseUp_ = function(e) {
     var dy = xy.y - this.startDragY;
     Blockly.publish && Blockly.publish(
       {
+        block  : this.id,
         startX : this.startDragX,
         startY : this.startDragY,
         dx     : dx,

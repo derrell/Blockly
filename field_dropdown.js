@@ -101,7 +101,17 @@ Blockly.FieldDropdown.prototype.showEditor_ = function() {
         this.changeHandler_(text);
       } else {
         this.setText(text);
-      }
+
+        if (this.sourceBlock_) {
+          Blockly.publish && Blockly.publish(
+            {
+              block : this.sourceBlock_.id,
+              index : this.sourceBlock_.titleRow.indexOf(this),
+              text  : text
+            },
+            "setTitleText");
+          }
+        }
       // This mouse click has been handled, don't bubble up to document.
       e.stopPropagation();
     };
