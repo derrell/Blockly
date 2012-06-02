@@ -41,7 +41,7 @@ Blockly.Field = function(text) {
       {rx: 4, ry: 4}, this.group_);
   this.textElement_ = Blockly.createSvgElement('text',
       {'class': 'blocklyText'}, this.group_);
-  if (this.CURSOR) {
+  if (this.CURSOR && this.group_ && this.group_.style) {
     // Different field types show different cursor hints.
     this.group_.style.cursor = this.CURSOR;
   }
