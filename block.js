@@ -481,7 +481,7 @@ Blockly.Block.prototype.showContextMenu_ = function(x, y) {
   var options = [];
 
   if (this.editable) {
-    if (Blockly.Comment) {
+    if (Blockly.Comment && !this.collapsed) {
       // Option to add/remove a comment.
       var commentOption = {enabled: true};
       if (this.comment) {
@@ -1053,6 +1053,10 @@ Blockly.Block.prototype.setCollapsed = function(collapsed) {
     }
   }
 
+  if (collapsed && this.comment) {
+    this.comment.setPinned(false);
+  }
+
   if (renderList.length == 0) {
     // No child blocks, just render this block.
     renderList[0] = this;
@@ -1255,7 +1259,7 @@ Blockly.Block.prototype.getStatementLabel = function(n) {
  * @param {number} n The index (starting at 0).
  * @return {string} The label's text, or null if the input does not exist.
  */
-Blockly.Block.prototype.getVariableLabel = function(n) {
+Blockly.Block.prototype.getNameLabel = function(n) {
   return this.getLabel_(n, Blockly.LOCAL_VARIABLE);
 };
 
@@ -1307,7 +1311,7 @@ Blockly.Block.prototype.setMutator = function(mutator) {
 };
 
 /**
- * Returns the comment on this block (or '' of none).
+ * Returns the comment on this block (or '' if none).
  * @return {string} Block's comment.
  */
 Blockly.Block.prototype.getCommentText = function() {

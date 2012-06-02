@@ -78,7 +78,12 @@ Blockly.Flyout.prototype.getMetrics = function() {
   }
   var viewHeight = this.height_ - 2 * this.CORNER_RADIUS;
   var viewWidth = this.width_;
-  var optionBox = this.svgOptions_.getBBox();
+  try {
+    var optionBox = this.svgOptions_.getBBox();
+  } catch (e) {
+    // Firefox has trouble with hidden elements (Bug 528969).
+    var optionBox = {height: 0, y: 0};
+  }  
   return {
     viewHeight: viewHeight,
     viewWidth: viewWidth,
@@ -194,7 +199,7 @@ Blockly.Flyout.prototype.hide = function() {
 /**
  * Show and populate the flyout.
  * @param {!Array.<string>|string} names List of type names of blocks to show.
- *     Or 'variables' for a custom list of variables.
+ *     Variables and procedures have a custom set of blocks.
  */
 Blockly.Flyout.prototype.show = function(names) {
   var margin = this.CORNER_RADIUS;
@@ -203,32 +208,12 @@ Blockly.Flyout.prototype.show = function(names) {
   // Create the blocks to be shown in this flyout.
   var blocks = [];
   var gaps = [];
-  if (names == Blockly.VARIABLE_CAT) {
+  if (names == Blockly.MSG_VARIABLE_CATEGORY) {
     // Special category for variables.
-    var variableList = Blockly.Variables.allVariables();
-    variableList.sort(Blockly.caseInsensitiveComparator);
-    // In addition to the user's variables, we also want to display the default
-    // variable name at the top.  We also don't want this duplicated if the
-    // user has created a variable of the same name.
-    variableList.unshift(null);
-    var defaultVariable = undefined;
-    for (var i = 0; i < variableList.length; i++) {
-      if (variableList[i] === defaultVariable) {
-        continue;
-      }
-      var getBlock = new Blockly.Block(this.workspace_, 'variables_set');
-      getBlock.initSvg();
-      var setBlock = new Blockly.Block(this.workspace_, 'variables_get');
-      setBlock.initSvg();
-      if (variableList[i] === null) {
-        defaultVariable = getBlock.getTitleText(1);
-      } else {
-        getBlock.setTitleText(variableList[i], 1);
-        setBlock.setTitleText(variableList[i], 1);
-      }
-      blocks.push(getBlock, setBlock);
-      gaps.push(margin, margin * 3);
-    }
+    Blockly.Variables.flyoutCategory(blocks, gaps, margin, this.workspace_);
+  } else if (names == Blockly.MSG_PROCEDURE_CATEGORY) {
+    // Special category for procedures.
+    Blockly.Procedures.flyoutCategory(blocks, gaps, margin, this.workspace_);
   } else {
     for (var i = 0, name; name = names[i]; i++) {
       var block = new Blockly.Block(this.workspace_, name);

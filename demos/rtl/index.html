@@ -1,33 +1,14 @@
 <html>
 <head>
   <title>Blockly Demo: RTL</title>
-  <script type="text/javascript" src="../../blockly.js"></script>
-  <script type="text/javascript" src="../../block.js"></script>
-  <script type="text/javascript" src="../../block_svg.js"></script>
-  <script type="text/javascript" src="../../comment.js"></script>
-  <script type="text/javascript" src="../../connection.js"></script>
-  <script type="text/javascript" src="../../contextmenu.js"></script>
-  <script type="text/javascript" src="../../field.js"></script>
-  <script type="text/javascript" src="../../field_dropdown.js"></script>
-  <script type="text/javascript" src="../../field_label.js"></script>
-  <script type="text/javascript" src="../../field_textinput.js"></script>
-  <script type="text/javascript" src="../../flyout.js"></script>
-  <script type="text/javascript" src="../../generator.js"></script>
-  <script type="text/javascript" src="../../inject.js"></script>
+  <script type="text/javascript" src="../../blockly_compressed.js"></script>
   <script type="text/javascript" src="../../language/language_control.js"></script>
   <script type="text/javascript" src="../../language/language_logic.js"></script>
   <script type="text/javascript" src="../../language/language_math.js"></script>
   <script type="text/javascript" src="../../language/language_text.js"></script>
   <script type="text/javascript" src="../../language/language_lists.js"></script>
   <script type="text/javascript" src="../../language/language_variables.js"></script>
-  <script type="text/javascript" src="../../mutator.js"></script>
-  <script type="text/javascript" src="../../scrollbar.js"></script>
-  <script type="text/javascript" src="../../toolbox.js"></script>
-  <script type="text/javascript" src="../../tooltip.js"></script>
-  <script type="text/javascript" src="../../trashcan.js"></script>
-  <script type="text/javascript" src="../../variables.js"></script>
-  <script type="text/javascript" src="../../workspace.js"></script>
-  <script type="text/javascript" src="../../xml.js"></script>
+  <script type="text/javascript" src="../../language/language_procedures.js"></script>
   <style>
     body {
       background-color: white;
@@ -55,53 +36,45 @@
 </head>
 <body onload="init()">
   <h1><a href="http://code.google.com/p/google-blockly/">Blockly</a> &gt;
-    <a href="../">Demos</a> &gt; Right-to-Left</h1>
+    <a href="../index.html">Demos</a> &gt; Right-to-Left</h1>
 
   <div id="svgDiv"></div>
 
   <xml id="startBlocks" style="display: none">
-    <block type="controls_if" inline="false" x="-120" y="80">
-      <mutation></mutation>
-      <value label="if">
+    <block type="controls_if" inline="false" x="-100" y="50">
+      <value i="0">
         <block type="logic_compare" inline="true">
-          <value>
+          <value i="0">
             <block type="variables_get">
-              <title>get</title>
-              <title>Count</title>
+              <title i="1">item</title>
             </block>
           </value>
-          <value label="&lt;">
+          <value i="1" label="&gt;">
             <block type="math_number">
-              <title>256</title>
+              <title i="0">256</title>
             </block>
           </value>
         </block>
       </value>
-      <statement label="then">
+      <statement i="0">
         <block type="variables_set" inline="false">
-          <title>set</title>
-          <title>Count</title>
-          <value>
+          <title i="1">item</title>
+          <value i="0">
             <block type="math_number">
-              <title>0</title>
+              <title i="0">0</title>
             </block>
           </value>
           <next>
             <block type="text_print" inline="false">
-              <title>print</title>
-              <value>
+              <value i="0">
                 <block type="text">
-                  <title>&rdquo;</title>
-                  <title>Game Over</title>
-                  <title>&ldquo;</title>
+                  <title i="1">Game Over</title>
                 </block>
               </value>
-              <next></next>
             </block>
           </next>
         </block>
       </statement>
-      <next></next>
     </block>
   </xml>
 </body>

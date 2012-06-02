@@ -57,7 +57,8 @@ Blockly.JavaScript.math_arithmetic = function(opt_dropParens) {
 Blockly.JavaScript.math_change = function() {
   // Add to a variable in place.
   var argument0 = Blockly.JavaScript.valueToCode_(this, 0, true) || '0';
-  var varName = Blockly.JavaScript.variableDB_.getVariable(this.getTitleText(1));
+  var varName = Blockly.JavaScript.variableDB_.getName(this.getTitleText(1),
+      Blockly.Variables.NAME_TYPE);
   return varName + ' = (' + varName + ' || 0) + ' + argument0 + ';\n';
 };
 
@@ -160,9 +161,9 @@ Blockly.JavaScript.math_on_list = function() {
       if (!Blockly.JavaScript.definitions_['math_median']) {
         // Median is not a native JavaScript function.  Define one.
         // May need to handle null. 
-        // Currently Blockly_math_median([null,null,1,3]) == 0.5.
+        // Currently math_median([null,null,1,3]) == 0.5.
         var func = [];
-        func.push('function Blockly_math_median(list) {');
+        func.push('function math_median(list) {');
         func.push('  if (!list.length) return 0;');
         func.push('  var localList = [].concat(list);');
         func.push('  localList.sort(function(a, b) {return b - a;});');
@@ -174,7 +175,7 @@ Blockly.JavaScript.math_on_list = function() {
         func.push('}');
         Blockly.JavaScript.definitions_['math_median'] = func.join('\n');
       }
-      code = 'Blockly_math_median(' + list + ')';
+      code = 'math_median(' + list + ')';
       break;
     case this.MSG_MODE:
       if (!Blockly.JavaScript.definitions_['math_mode']) {
@@ -182,7 +183,7 @@ Blockly.JavaScript.math_on_list = function() {
         // the returned result is provided as an array.
         // Mode of [3, 'x', 'x', 1, 1, 2, '3'] -> ['x', 1].
         var func = [];
-        func.push('function Blockly_math_mode(values) {');
+        func.push('function math_mode(values) {');
         func.push('  var modes = [];');
         func.push('  var counts = [];');
         func.push('  var maxCount = 0;');
@@ -212,7 +213,7 @@ Blockly.JavaScript.math_on_list = function() {
         func.push('}');
         Blockly.JavaScript.definitions_['math_mode'] = func.join('\n');
       }
-      code = 'Blockly_math_mode(' + list + ')';
+      code = 'math_mode(' + list + ')';
       break;
     case this.MSG_STD_DEV:
       code = 'Math.max.apply(null,' + list + ')';

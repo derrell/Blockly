@@ -115,7 +115,6 @@ Blockly.Language.maze_isWall = {
       return Blockly.Language.maze_isWall.DIRECTIONS;
     });
     this.addTitle(dropdown);
-    this.addTitle('?');
     this.setTooltip('Returns true if there is a wall in ' +
                     'the specified direction.');
   }
@@ -128,5 +127,5 @@ Blockly.JavaScript.maze_isWall = function() {
   // Generate JavaScript for checking if there is a wall.
   var direction = Blockly.Language.maze_isWall.DIRECTIONS
       .indexOf(this.getTitleText(1));
-  return 'Maze.isWall(' + direction + ', "' + this.id + '")';
+  return 'Maze.isWall(' + direction + ')';
 };
